@@ -6,6 +6,5 @@ function sumFirstLast(input) {
     return firstEl + lastEl;
 
 }
-
 let result = sumFirstLast(['10', '20', '30', `40`, `50`])
 console.log(result);
