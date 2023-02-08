@@ -1,18 +1,20 @@
 function objectFactory(libraryObj, orders) {
 
-    let result = []
+    let result = [];
+    
     for (const {template, parts} of orders) {
-        let order = Object.assign({},template)
+        let order = Object.assign({},template);
 
-        
         for (const part of parts) {
-            let func = libraryObj[part] 
-            order[part] = func
+
+            let func = libraryObj[part] ;
+            order[part] = func;
+
         } 
-        result.push(order)
+        result.push(order);
     }
 
-    return result
+    return result;
 }
 const library =
 {
