@@ -9,7 +9,6 @@ function sortNumb(input) {
         let biggest = input.pop()
 
         result.push(smallest, biggest)
-
     }
 
     return result;
