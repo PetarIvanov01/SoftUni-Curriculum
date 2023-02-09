@@ -1,5 +1,3 @@
-const { log } = require("console");
-
 const readLine = require(`readline`).createInterface({
     input: process.stdin,
     output: process.stdout
@@ -35,7 +33,6 @@ let recursiveAsyncReadLine = function () {
             recursiveAsyncReadLine()
 
         }
-
     });
 }
 recursiveAsyncReadLine();
