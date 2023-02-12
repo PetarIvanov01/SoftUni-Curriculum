@@ -6,5 +6,4 @@ function showText() {
     smallText.style.display = 'none';
     fullText.style.display = 'inline';
 
-
 }
