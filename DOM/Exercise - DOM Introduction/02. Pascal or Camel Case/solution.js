@@ -5,7 +5,7 @@ function solve() {
 
   function result(input, typeCase) {
     let result = ''
-debugger
+    
     if (typeCase === `Camel Case` && input.length !== 0) {
       
       for (let index = 0; index < input.length; index++) {
