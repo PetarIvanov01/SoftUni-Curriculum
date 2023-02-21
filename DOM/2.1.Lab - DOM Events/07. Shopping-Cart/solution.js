@@ -4,15 +4,18 @@ function solve() {
    let shopingCart = document.getElementsByClassName('shopping-cart')[0];
    let products = [];
    let totalPrice = 0;
+   let check = false
 
    shopingCart.addEventListener('click', add);
    function add(event) {
 
       if (event.target.nodeName !== 'BUTTON') return;
 
+      if (check) return;
+
       let button = event.target
-      //(button.textContent !== 'Checkout')
-      if (Array.from(button.classList).indexOf('add-product') >= 0) {
+      //Array.from(button.classList).indexOf('add-product') >= 0
+      if (button.textContent !== 'Checkout') {
 
          let productElement = event.target.parentElement.parentElement;
 
@@ -28,10 +31,10 @@ function solve() {
 
          totalPrice += Number(price);
       }
-      else if (Array.from(button.classList).indexOf('checkout') >= 0) {
+      else {
 
          textArea.textContent += `You bought ${products.join(', ')} for ${totalPrice.toFixed(2)}`
-         shopingCart.removeEventListener('click', add);
+         check = true;
 
       }
    }
