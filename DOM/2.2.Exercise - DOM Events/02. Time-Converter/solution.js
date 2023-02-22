@@ -29,7 +29,6 @@ function attachEventsListeners() {
             minutesInput.value = Number(hoursInput.value) * 60;
             secondsInput.value = Number(minutesInput.value) * 60;
         }
-        
         else if (target == minutesBtn) {
             hoursInput.value = Number(minutesInput.value) / 60;
             daysInput.value = Number(hoursInput.value) / 24;
