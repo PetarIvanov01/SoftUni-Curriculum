@@ -1,10 +1,9 @@
 function solution(initialValue) {
 
     return function (a) {
-        a += initialValue;
-        return a;
+        return a + initialValue;
     };
-
+    
 }
 
 let add5 = solution(5);
