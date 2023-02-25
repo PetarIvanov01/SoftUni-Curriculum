@@ -12,6 +12,7 @@ function solution() {
     }
 
 }
+console.log(solution);
 let firstZeroTest = solution();
 firstZeroTest.append('hello');
 firstZeroTest.append('again');
