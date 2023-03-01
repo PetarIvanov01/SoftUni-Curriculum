@@ -19,7 +19,7 @@ function solve() {
         const article = document.createElement('article');
         article.appendChild(createElements('h3', input.fieldOne.value));
         article.appendChild(createElements('p', `Description: ${input.fieldTwo.value}`));
-        article.appendChild(createElements('p', `Due date: ${input.fieldThr.value}`));
+        article.appendChild(createElements('p', `Due Date: ${input.fieldThr.value}`));
         const div = createElements('div', undefined, 'flex');
 
         const startBtn = createElements('button', 'Start', 'green');
@@ -58,8 +58,6 @@ function solve() {
 
             })
         }
-
-
     }
 
     function createElements(type, content, className) {
