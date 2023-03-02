@@ -2,7 +2,7 @@ function solve(param1, param2) {
 
     let data = JSON.parse(param1);
     let [key, value] = param2.split('-');
-    
+
     let counter = 0
 
     data.forEach(obj => filtered.call(obj));
@@ -14,9 +14,7 @@ function solve(param1, param2) {
             return console.log(`${counter++}. ${this.first_name} ${this.last_name} - ${this.email}`);
 
         }
-
     }
-
 }
 solve(`[{
     "id": "1",
