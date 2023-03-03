@@ -5,10 +5,10 @@ function townPopulation(input) {
         el = el.split(` <-> `);
         if (!obj.hasOwnProperty(el[0])) {
 
-
-            return obj[el[0]] = Number(el[1])
+            return obj[el[0]] = Number(el[1]);
+            
         } else {
-          
+
             obj[el[0]] += Number(el[1])
 
         }
