@@ -16,6 +16,6 @@ function sum(arr, start, end) {
         sum += current
 
     }
-
     return sum
 }
+module.exports = sum
