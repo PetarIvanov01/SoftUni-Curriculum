@@ -18,4 +18,3 @@ function sum(arr, start, end) {
     }
     return sum
 }
-module.exports = sum
