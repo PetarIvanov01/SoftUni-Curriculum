@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const sum = require('./sym');
+const sum = require('./04. Sum of Numbers');
 
 describe('Tests for sum function', () => {
     it('returned sum of the numbers', () => {
