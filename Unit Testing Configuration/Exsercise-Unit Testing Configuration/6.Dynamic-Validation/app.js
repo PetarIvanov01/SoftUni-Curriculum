@@ -1,13 +1,16 @@
 function validate() {
+
     let emailField = document.getElementById('email');
-    let reg = /[a-z]+@[a-z]+\.[a-z]+/gm;
+    let reg = /[a-z]+@[a-z]+\.[a-z]+/m;
 
-    emailField.addEventListener('change', () => {
+    emailField.addEventListener('change', (event) => {
 
-        if (!reg.test(emailField.textContent)) {
-            emailField.style === 'none';
+        if (!reg.test(event.target.value)) {
+            emailField.classList.add('error')
         }
-        emailField.style === 'error';
+        else {
+            emailField.classList.remove('error')
+        }
 
     })
 }
