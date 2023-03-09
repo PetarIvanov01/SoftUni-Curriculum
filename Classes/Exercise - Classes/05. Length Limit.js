@@ -22,8 +22,8 @@ class Stringer {
         else if (this.innerString.length > this.innerLength) {
             return this.innerString.slice(0, this.innerLength) + '...';
         }
+        return this.innerString;
     }
-
 }
 
 let test = new Stringer("Test", 5);
