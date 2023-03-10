@@ -21,7 +21,7 @@ class Hex {
         }
         return new Hex(this.value - number);
     }
-    parse(string) {
+    static parse(string) {
         return parseInt(string, 16);
     }
 
