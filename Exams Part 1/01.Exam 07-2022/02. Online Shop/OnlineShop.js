@@ -81,15 +81,3 @@ console.log(myOnlineShop.sellProduct('laptop'));
 console.log(myOnlineShop.revision());
 
 
-
-// const myOnlineShop = result;
-// let Shop = new myOnlineShop(500);
-
-// assert.equal(Shop.loadingStore('headphones', 10, 200), "The headphones has been successfully delivered in the warehouse.");
-// assert.equal(Shop.loadingStore('laptop', 5, 200), "The laptop has been successfully delivered in the warehouse.");
-// assert.equal(Shop.quantityCheck('headphones', 10), "You have enough from product headphones.");
-// assert.equal(Shop.quantityCheck('laptop', 10), "You added 5 more from the laptop products.");
-// expect(() => Shop.quantityCheck('TV', 10)).to.throw("There is no TV in the warehouse.");
-
-
-
