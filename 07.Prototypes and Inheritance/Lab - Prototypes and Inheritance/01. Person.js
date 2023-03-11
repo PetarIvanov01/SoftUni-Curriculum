@@ -9,6 +9,8 @@ function Person(firstName, lastName) {
                 this.firstName = firstName;
                 this.lastName = lastName;
             }
+            configurable = true;
+            enumerable = true;
         },
         get() {
             return this.firstName + ' ' + this.lastName
