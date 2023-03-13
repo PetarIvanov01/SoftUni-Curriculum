@@ -43,6 +43,7 @@ function createAssemblyLine(car) {
         },
     }
 }
+
 const assemblyLine = createAssemblyLine();
 const myCar = {
     make: 'Toyota',
