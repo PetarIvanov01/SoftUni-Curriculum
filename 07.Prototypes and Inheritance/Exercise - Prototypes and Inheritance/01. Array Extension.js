@@ -9,13 +9,10 @@
         return this.slice(0, n);
     }
     Array.prototype.sum = function () {
-
+        return this.reduce((a, b) => a + b, 0);
     }
     Array.prototype.average = function () {
-
+        return this.reduce((a, b) => a + b, 0) / this.length;
     }
-
 })()
-
 let myArr = [1, 2, 3];
-console.log(myArr.take(1));
