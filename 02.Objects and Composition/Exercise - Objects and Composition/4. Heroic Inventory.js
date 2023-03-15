@@ -5,7 +5,7 @@ function heroicInventory(input) {
 
     for (const el of input) {
         let [name, level, items] = el.split(` / `)
-        items = items.split(`, `);
+        items = items ? items.split(', ') : []
         level = Number(level)
 
         heroObj = {
@@ -19,4 +19,4 @@ function heroicInventory(input) {
 }
 heroicInventory(['Isacc / 25 / Apple, GravityGun',
     'Derek / 12 / BarrelVest, DestructionSword',
-    'Hes / 1 / Desolator, Sentinel, Antara'])
+    'Hes / 1 / '])
