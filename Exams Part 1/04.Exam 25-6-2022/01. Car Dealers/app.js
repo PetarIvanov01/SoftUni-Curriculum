@@ -1,89 +1,98 @@
 window.addEventListener("load", solve);
 
 function solve() {
+  let inputElements = document.querySelectorAll('fieldset input, select');
+  let publishBtnEl = document.getElementById('publish');
+  let tableBodyEl = document.getElementById('table-body');
+  let soldCarsListEl = document.getElementById('cars-list');
+  let totalProfitEl = document.getElementById('profit');
 
-  const [make, model, year, orfCost, selCost] = document.querySelectorAll('fieldset input');
-  const fuel = document.querySelector('#fuel');
-  const sbmButton = document.querySelector('#publish');
-  let profit = 0;
+  // let carDetails = {};
+  let totalProfit = 0;
 
-  sbmButton.addEventListener('click', publish);
+  publishBtnEl.addEventListener('click', (e) => {
+      e.preventDefault();
 
-  function publish(event) {
-    event.preventDefault()
+      let carDetails = {};
 
-    if (make.value === '' || model.value === '' || year.value === '' || orfCost.value === '' || selCost === '' || orfCost.value > selCost.value) {
-      return;
-    }
+      let hasEmptyInput = Array.from(inputElements).some(x => !x.value || x.value.trim() === '');
 
-    const obj = {
-      _make: make.value,
-      _model: model.value,
-      _year: year.value,
-      _orfCost: orfCost.value,
-      _selCost: selCost.value,
-      _fuel: fuel.value,
-    }
+      if (hasEmptyInput) {
+          return;
+      }
 
-    const parrentEl = document.getElementById('table-body');
+      Array.from(inputElements).forEach(x => {
+          carDetails[x.id] = x.value;
+      });
 
-    const field = createElements('tr', { class: 'row' },
-      createElements('td', {}, make.value),
-      createElements('td', {}, model.value),
-      createElements('td', {}, year.value),
-      createElements('td', {}, fuel.value),
-      createElements('td', {}, orfCost.value),
-      createElements('td', {}, selCost.value),
-      createElements('td', {},
-        createElements('button', { class: 'action-btn', editClass: 'edit' }, 'Edit'),
-        createElements('button', { class: 'action-btn', sellClass: 'sell' }, 'Sell')));
+      if (isNaN(Number(carDetails['original-cost'])) || isNaN(Number(carDetails['selling-price']))) {
+          return;
+      }
 
-    parrentEl.appendChild(field)
-    const editBtn = document.querySelector('.edit');
-    const sellBtn = document.querySelector('.sell');
+      if (Number(carDetails['original-cost']) > Number(carDetails['selling-price'])) {
+          return;
+      }
 
-    document.querySelector('form').reset();
+      let trRowEl = document.createElement('tr');
+      trRowEl.classList.add('row');
 
-    editBtn.addEventListener('click', function () {
-      field.remove()
-      make.value = obj._make;
-      model.value = obj._model;
-      year.value = obj._year;
-      orfCost.value = obj._orfCost;
-      selCost.value = obj._selCost;
-      fuel.value = obj._fuel;
-    });
+      Object.keys(carDetails).forEach(key => {
+          let tdEl = document.createElement('td');
+          tdEl.textContent = carDetails[key];
+          trRowEl.appendChild(tdEl)
+      });
 
-    sellBtn.addEventListener('click', function () {
-      field.remove();
-      let diff = obj._selCost - obj._orfCost;
-      profit += diff
+      let tdBtnsEl = document.createElement('td');
+      let editBtnEl = document.createElement('button');
+      editBtnEl.textContent = 'Edit';
+      editBtnEl.classList.add('action-btn')
+      editBtnEl.classList.add('edit')
+      let sellBtnEl = document.createElement('button');
+      sellBtnEl.textContent = 'Sell'
+      sellBtnEl.classList.add('action-btn');
+      sellBtnEl.classList.add('sell');
 
-      const carsList = document.querySelector('#cars-list');
-      const eachClass = createElements('li', { class: 'each-list' },
-        createElements('span', {}, obj._make),
-        createElements('span', {}, obj._model),
-        createElements('span', {}, diff))
+      tdBtnsEl.appendChild(editBtnEl);
+      tdBtnsEl.appendChild(sellBtnEl);
 
-      document.getElementById('profit').textContent = diff.toFixed(2);
-      carsList.appendChild(eachClass)
-    })
-  }
+      trRowEl.appendChild(tdBtnsEl);
+      tableBodyEl.appendChild(trRowEl);
 
-  function createElements(type, atrib, ...content) {
-    const element = document.createElement(type);
+      Array.from(inputElements).forEach(x => {
+          x.value = '';
+      })
 
-    if (Object.keys(atrib).length !== 0) {
-      for (let prop in atrib) {
-        element.classList.add(`${atrib[prop]}`);
-      };
-    };
-    for (let el of content) {
-      if (typeof el == 'string' || typeof el == 'number') {
-        el = document.createTextNode(el);
-      };
-      element.appendChild(el);
-    };
-    return element;
-  }
+      editBtnEl.addEventListener('click', (e) => {
+          Array.from(inputElements).forEach(x => {
+              // console.log(carDetails);
+              x.value = carDetails[x.id];
+          })
+
+          tableBodyEl.removeChild(trRowEl);
+      })
+
+      sellBtnEl.addEventListener('click', (e) => {
+          let liEl = document.createElement('li');
+          liEl.classList.add('each-list');
+
+          let carModelAndNameEl = document.createElement('span');
+          carModelAndNameEl.textContent = carDetails.make + ' ' + carDetails.model;
+
+          let yearEl = document.createElement('span');
+          yearEl.textContent = carDetails.year;
+
+          let profitEl = document.createElement('span');
+          profitEl.textContent = Number(carDetails['selling-price']) - Number(carDetails['original-cost']);
+
+          liEl.appendChild(carModelAndNameEl);
+          liEl.appendChild(yearEl);
+          liEl.appendChild(profitEl);
+
+          soldCarsListEl.appendChild(liEl);
+          totalProfit += Number(carDetails['selling-price']) - Number(carDetails['original-cost']);
+
+          totalProfitEl.textContent = Math.round(totalProfit).toFixed(2);
+          tableBodyEl.removeChild(trRowEl);
+      })
+  })
 }
