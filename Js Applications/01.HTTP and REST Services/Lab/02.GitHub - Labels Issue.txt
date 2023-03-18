@@ -1,0 +1,5 @@
+1. Send a GET request to https://api.github.com/repos/testnakov/test-nakov-repo/issues/:id, where :id is the issue.
+2. Response - {
+    "message": "Not Found",
+    "documentation_url": "https://docs.github.com/rest/reference/issues#get-an-issue"
+}
