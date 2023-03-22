@@ -61,7 +61,6 @@ function attachEvents() {
 
         const arrOfWethData = forecastData.forecast;
         const name = forecastData.name;
-        console.log(arrOfWethData);
         const upDivForecast = createEl('div', '', ['forecast-info']);
 
         for (const el of arrOfWethData) {
