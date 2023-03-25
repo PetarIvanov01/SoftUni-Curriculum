@@ -3,12 +3,12 @@ function lockedProfile() {
     const main = document.getElementById('main');
 
     async function createPeoples() {
-
+        let c = 0
         const response = await fetch('http://localhost:3030/jsonstore/advanced/profiles');
         const data = await response.json();
 
         for (const [id, obj] of Object.entries(data)) {
-
+            c++;
             let personData = Object.entries(obj);
             let username = personData[1].pop();
             let email = personData[2].pop();
@@ -20,11 +20,11 @@ function lockedProfile() {
             imgInDiv.src = './iconProfile2.png';
 
             let labelLock = createEl('label', 'Lock',);
-            let inputLocked = createEl('input', '', { 'type': 'radio', 'name': 'user1Locked', 'value': "lock" });
+            let inputLocked = createEl('input', '', { 'type': 'radio', 'name': `user${c}Locked`, 'value': "lock" });
             inputLocked.setAttribute('checked', '')
 
             let labelUnlock = createEl('label', 'Unlock');
-            let inputUsername = createEl('input', '', { 'type': 'radio', 'name': 'user1Locked', 'value': "unlock" });
+            let inputUsername = createEl('input', '', { 'type': 'radio', 'name': `user${c}Locked`, 'value': "unlock" });
 
             parentDiv.appendChild(imgInDiv);
             parentDiv.appendChild(labelLock);
@@ -35,7 +35,7 @@ function lockedProfile() {
             let br = createEl('br');
             let hr = createEl('hr');
             let labelAboveHr = createEl('label', 'Username');
-            let inputUsernameAboveHr = createEl('input', '', { 'type': 'text', 'name': 'user1Username', });
+            let inputUsernameAboveHr = createEl('input', '', { 'type': 'text', 'name': `user${c}Username`, });
             inputUsernameAboveHr.setAttribute('value', `${username}`)
             inputUsernameAboveHr.setAttribute('disabled', '')
             inputUsernameAboveHr.setAttribute('readonly', '')
@@ -45,7 +45,7 @@ function lockedProfile() {
             parentDiv.appendChild(labelAboveHr);
             parentDiv.appendChild(inputUsernameAboveHr);
 
-            let divAboveHr = createEl('div', '', { 'id': "user1HiddenFields" });
+            let divAboveHr = createEl('div', '', { 'id': `user${c}HiddenFields` });
             divAboveHr.style.display = 'none';
 
             parentDiv.appendChild(divAboveHr);
@@ -53,13 +53,13 @@ function lockedProfile() {
             let hrInDiv = createEl('hr');
             let labelEmailInDiv = createEl('lable', 'Email:');
 
-            let inputInDiv = createEl('input', '', { 'type': "email", 'name': 'user1Email' });
+            let inputInDiv = createEl('input', '', { 'type': "email", 'name': `user${c}Email` });
             inputInDiv.setAttribute('value', `${email}`)
             inputInDiv.setAttribute('disabled', '')
             inputInDiv.setAttribute('readonly', '')
 
             let lableAgeInDiv = createEl('label', 'Age:');
-            let inputAgeInDiv = createEl('input', '', { 'type': "text", 'name': 'user1Email' });
+            let inputAgeInDiv = createEl('input', '', { 'type': "email", 'name': `user${c}Email` });
             inputAgeInDiv.setAttribute('value', `${age}`)
             inputAgeInDiv.setAttribute('disabled', '')
             inputAgeInDiv.setAttribute('readonly', '')
