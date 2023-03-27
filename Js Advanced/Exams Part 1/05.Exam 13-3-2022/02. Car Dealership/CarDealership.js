@@ -14,9 +14,6 @@ class CarDealership {
         this.availableCars.push(newCar);
 
         return `New car added: ${model} - ${horsepower} HP - ${mileage.toFixed(2)} km - ${price.toFixed(2)}$`;
-
-
-
     }
     sellCar(model, desiredMileage) {
 
@@ -35,6 +32,7 @@ class CarDealership {
         else {
             car.price = car.price * 0.90;
         }
+        this.totalIncome += car.price;
         let soldCar = { model: car.model, horsepower: car.horsepower, soldPrice: car.price }
         this.soldCars.push(soldCar);
         this.availableCars.splice(this.availableCars.indexOf(car), 1);
@@ -55,8 +53,23 @@ class CarDealership {
     }
     salesReport(criteria) {
 
-    }
+        let output = `-${this.name} has a total income of ${this.totalIncome.toFixed(2)}$\n`;
+        output += `-${this.soldCars.length} cars sold:\n`
 
+        if (criteria == 'horsepower') {
+            this.soldCars.sort((a, b) => b.horsepower - a.horsepower);
+        }
+        else if (criteria == 'model') {
+            this.soldCars.sort((a, b) => a.model.localeCompare(b.model));
+        }
+        else {
+            throw new Error('Invalid criteria!');
+        }
+        for (const car of this.soldCars) {
+            output += `---${car.model} - ${car.horsepower} HP - ${car.soldPrice.toFixed(2)}$\n`
+        }
+        return output.trim()
+    }
 }
 let dealership = new CarDealership('SoftAuto');
 dealership.addCar('Toyota Corolla', 100, 3500, 190000);
@@ -65,6 +78,7 @@ dealership.addCar('Audi A3', 120, 4900, 240000);
 dealership.sellCar('Toyota Corolla', 230000);
 dealership.sellCar('Mercedes C63', 110000);
 console.log(dealership.salesReport('horsepower'));
+
 
 
 
