@@ -10,5 +10,5 @@ To use this project, you'll need to run the server locally. Here are the steps t
 - Access the server through your preferred web browser by visiting http://localhost:3000.
 
 ## Credits
-This project was created using the data from the server provided by SoftUni and was developed as part of the JavaScript Applications module offered by them. All of the information used in this project was taken from the <a href="https://github.com/viktorpts/js-apps-workshop" target="_blank">js-apps-workshop</a> repository, and the techniques used were learned through the course.
+This project was created using the data from the server provided by SoftUni and was developed as part of the JavaScript Applications module offered by them. All of the information used in this project was taken from the <a href="https://github.com/viktorpts/js-apps-workshop" target="_blank" rel="noopener">js-apps-workshop</a> repository, and the techniques used were learned through the course.
 
