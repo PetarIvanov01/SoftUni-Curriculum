@@ -28,10 +28,10 @@ function takeInformation() {
             body: JSON.stringify(students)
         })
         document.querySelectorAll('[type=text]').forEach(e => e.value = "");
-        getStudents()
-
+        
     }
-
+    
+    getStudents()
 
     async function getStudents() {
 
