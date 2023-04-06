@@ -1,9 +1,9 @@
 let url = 'http://localhost:3030/jsonstore/collections/books';
-let saveButton = document.querySelector('form button');
 let form = document.querySelector('form');
 let formText = document.querySelector('form h3');
+
 document.getElementById('loadBooks').addEventListener('click', getAllBooks);
-saveButton.addEventListener('click', createBook);
+form.addEventListener('submit', createBook);
 
 async function getAllBooks(event) {
 
@@ -38,14 +38,14 @@ async function edit(bookId, event) {
 
     formText.textContent = 'Edit FORM';
     document.querySelector('form button').textContent = 'Save';
-    
+
     const bookTitle = event.target.parentNode.parentNode.querySelector('td:nth-child(1)').textContent;
     const bookAuthor = event.target.parentNode.parentNode.querySelector('td:nth-child(2)').textContent;
 
     form.querySelector('input[name="title"]').value = bookTitle;
     form.querySelector('input[name="author"]').value = bookAuthor;
 
-    form.removeEventListener('click', createBook);
+    form.removeEventListener('submit', createBook);
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
