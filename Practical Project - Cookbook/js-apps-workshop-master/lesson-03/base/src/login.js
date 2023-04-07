@@ -38,7 +38,7 @@ async function onLogin(e) {
         }
         else {
             const error = await response.json();
-            throw new Error(error);
+            throw new Error(error.message);
         }
 
     }
