@@ -1,17 +1,23 @@
-import { logout,checked } from "./auth.js";
-import { renderRecipe } from "./render.js";
+// import { renderHome } from "./home.js";
+import { router } from "./router.js";
 
-window.addEventListener('load', () =>
+const homeView = document.querySelector('.home');
+const navigation = document.querySelector('.navigation');
+const guest = document.querySelector('#guest');
+const user = document.querySelector('#user');
 
-    fetch('http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg')
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('logoutBtn').addEventListener('click', logout)
-            checked()
-            renderRecipe(Object.values(data))
-        })
-)
+guest.style.display = 'inline'
+user.style.display = 'inline'
 
+navigation.addEventListener('click', (e) => {
 
+    e.preventDefault()
 
+    if (e.target.tagName == 'A') {
 
+        const url = e.target.href;
+        const newUrl = new URL(url)
+
+        router(newUrl.pathname)
+    }
+})
