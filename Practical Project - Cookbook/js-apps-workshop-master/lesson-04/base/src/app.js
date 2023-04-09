@@ -1,13 +1,10 @@
-// import { renderHome } from "./home.js";
+import { checked } from "./auth.js";
 import { router } from "./router.js";
 
-const homeView = document.querySelector('.home');
 const navigation = document.querySelector('.navigation');
-const guest = document.querySelector('#guest');
-const user = document.querySelector('#user');
 
-guest.style.display = 'inline'
-user.style.display = 'inline'
+router('/');
+checked();
 
 navigation.addEventListener('click', (e) => {
 

@@ -1,24 +1,28 @@
+import { checked } from "./auth.js";
 
-export async function renderHome(path) {
+const homeSection = document.querySelector('.home');
 
-    let element = document.querySelector(path);
-    element.style.display = 'block';
+export function renderHome() {
+
+    homeSection.style.display = 'block';
+
+    informationRender()
+}
+
+export async function informationRender() {
 
     const res = await fetch('http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg')
     const data = await res.json()
-
-    // document.getElementById('logoutBtn').addEventListener('click', logout)
-    // checked()d
+    checked()
     renderRecipe(Object.values(data))
-
 }
 
 function renderRecipe(data) {
-    const main = document.querySelector('main');
+    const home = document.querySelector('.home');
 
-    main.innerHTML = '';
+    home.innerHTML = '';
 
-    data.forEach(el => main.appendChild(createRecipe(el, main)));
+    data.forEach(el => home.appendChild(createRecipe(el, home)));
 }
 function createRecipe(recipe, main) {
 

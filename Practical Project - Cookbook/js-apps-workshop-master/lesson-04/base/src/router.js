@@ -1,52 +1,31 @@
 import { renderCreateRecipe } from "./create.js";
 import { renderHome } from "./home.js";
 import { renderLogin } from "./login.js";
+import { logout } from "./logout.js";
 import { renderRegister } from "./register.js";
+import { render404 } from "./render404.js";
 
 const allPaths = {
-    '/': '.home',
-    '/create': '.create',
-    '/login': '.login',
-    '/register': '.register',
+    '/': renderHome,
+    '/create': renderCreateRecipe,
+    '/login': renderLogin,
+    '/register': renderRegister,
+    '/logout': logout,
 }
 
-// export function display(path) {
+export function router(path) {
 
-//     hideContent();
+    hideContent();
 
-//     let element = document.querySelector(allPaths[path]);
-//     element.style.display = 'block';
+    const renderer = allPaths[path] || render404
 
-//     router(path)
+    renderer()
 
-// }
+}
+
 function hideContent() {
 
     [...document.querySelectorAll('section')].forEach(el => { el.style.display = 'none' });
 
 }
-export function router(path) {
 
-    hideContent()
-
-    if (path == '/') {
-
-        renderHome(allPaths[path]);
-
-    }
-    else if (path == '/create') {
-
-        renderCreateRecipe(allPaths[path])
-    }
-    else if (path == '/login') {
-
-        renderLogin(allPaths[path])
-
-    }
-    else if (path == '/register') {
-
-        renderRegister(allPaths[path])
-
-    }
-
-}
