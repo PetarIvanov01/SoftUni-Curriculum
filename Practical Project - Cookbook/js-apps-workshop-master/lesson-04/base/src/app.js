@@ -1,10 +1,8 @@
-import { checked } from "./auth.js";
 import { router } from "./router.js";
 
 const navigation = document.querySelector('.navigation');
 
 router('/');
-checked();
 
 navigation.addEventListener('click', (e) => {
 

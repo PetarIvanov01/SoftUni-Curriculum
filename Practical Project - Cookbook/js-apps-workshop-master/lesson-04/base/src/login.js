@@ -8,6 +8,7 @@ export function renderLogin() {
     loginSection.style.display = 'block';
 
 }
+
 async function onLogin(e) {
     e.preventDefault();
 
@@ -39,8 +40,8 @@ async function onLogin(e) {
         if (response.status == 200) {
 
             const user = await response.json();
-            sessionStorage.setItem('accesToken', user.accessToken);
-            window.location = 'http://127.0.0.1:5500/base/index.html?email=&password=';
+            sessionStorage.setItem('user', JSON.stringify(user));
+            alert('You are logged!')
         }
         else {
             const error = await response.json();
