@@ -3,31 +3,29 @@ const user = JSON.parse(sessionStorage.getItem('user'));
 const logout = document.getElementById('logout');
 const addBtn = document.querySelector('.add')
 
-navigationButtons()
-function navigationButtons() {
-
-    if (!user) {
-        logout.style.display = 'none';
-        addBtn.disabled = true
-    }
-
-    else {
-        logout.style.display = 'inline';
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('register').style.display = 'none';
-
-        document.querySelector('.email span').textContent = user.email;
-        addBtn.disabled = false
-    }
+if (!user) {
+    logout.style.display = 'none';
 }
+
+else {
+    document.querySelector("#guest").style.display = "none";
+    document.querySelector('.email span').textContent = user.email;
+    addBtn.disabled = false
+    onLoad()
+}
+
+const section = document.querySelector('#home-view');
+const formCreate = document.querySelector('#addForm')
+
+formCreate.addEventListener('submit', onCreate)
+
+section.addEventListener('click', onClick);
 
 logout.addEventListener('click', onLogout)
 
 async function onLogout(event) {
 
     try {
-        console.log(user.token);
-
         const res = await fetch('http://localhost:3030/users/logout', {
             method: 'GET',
             headers: {
@@ -40,70 +38,108 @@ async function onLogout(event) {
             throw new Error(err.message);
         }
 
-        sessionStorage.removeItem('user');
+        sessionStorage.clear();
         window.location = './index.html';
     }
     catch (err) {
         alert(err.message)
     }
 }
-/*-------//--------*/
-
-const section = document.querySelector('#home-view');
-const formCreate = document.querySelector('#addForm')
-formCreate.addEventListener('submit', onCreate)
-section.addEventListener('click', onClick);
-
 
 function onClick(event) {
 
     let btnNav = event.target.className;
 
     if (btnNav == 'load') {
-        onLoad()
+        onLoad(event)
 
     } else if (btnNav == 'update') {
-        onUpdate()
+        onUpdate(event)
     }
     else if (btnNav == 'delete') {
-        onDelete()
+        onDelete(event)
     }
 
 }
 
 async function onLoad() {
 
-    const mainCatch = document.querySelector('#catches');
     const res = await fetch('http://localhost:3030/data/catches')
     const data = await res.json();
-    
-    mainCatch.innerHTML = '';
 
-    Object.values(data).map(el => mainCatch.appendChild(createCatch(el)));
+    document.getElementById("catches").replaceChildren(...data.map(createCatch));
+}
 
-    const updateBtn = document.querySelectorAll('.update');
-    const deleteBtn = document.querySelectorAll('.delete');
+async function onUpdate(event) {
 
-    Array.from(updateBtn).forEach(btn => {
-        if (btn.dataset.id !== user.id) {
-            btn.disabled = true
+    let btn = event.target
+
+    const parrent = btn.parentElement
+    const [angler, weight, species, location, bait, captureTime] = parrent.querySelectorAll('input');
+    const data = {
+        angler: angler.value,
+        weight: Number(weight.value),
+        species: species.value,
+        location: location.value,
+        bait: bait.value,
+        captureTime: Number(captureTime.value)
+    }
+
+    try {
+        const res = await fetch('http://localhost:3030/data/catches/' + btn.id, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "X-Authorization": user.accessToken
+            },
+            body: JSON.stringify(data)
+
+        })
+
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.message)
         }
-    })
-    Array.from(deleteBtn).forEach(btn => {
-        if (btn.dataset.id !== user.id) {
-            btn.disabled = true
+
+    } catch (error) {
+        alert(error.message)
+    }
+    onLoad();
+
+}
+
+async function onDelete(event) {
+
+    let btn = event.target
+
+    try {
+
+        const res = await fetch('http://localhost:3030/data/catches/' + btn.id, {
+            method: 'DELETE',
+            headers: {
+                "X-Authorization": user.token
+            }
+        })
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message);
         }
-    })
-}
-function onUpdate() {
+        onLoad()
+    }
+    catch (error) {
+        alert(error.message)
+    }
 
 }
-function onDelete() {
 
-}
 async function onCreate(event) {
     event.preventDefault();
 
+    if (!user) {
+        window.location = "./login.html";
+        return;
+    }
     const formData = new FormData(event.currentTarget)
 
     const data = {
@@ -128,10 +164,12 @@ async function onCreate(event) {
             body: JSON.stringify(data)
 
         });
+
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.message);
         }
+        onLoad()
         formCreate.reset()
 
     } catch (error) {
@@ -139,28 +177,84 @@ async function onCreate(event) {
     }
 
 }
+function createCatch(data) {
 
-function createCatch(el) {
+    const isDisabled = user && data._ownerId === user.id ? false : true;
+    const catches = createElement(
+        "div",
+        { class: "catch" },
+        createElement("label", {}, "Angler"),
+        createElement("input", {
+            type: "text",
+            class: "angler",
+            value: data.angler,
+            disabled: isDisabled,
+        }),
+        createElement("label", {}, "Weight"),
+        createElement("input", {
+            type: "text",
+            class: "weight",
+            value: data.weight,
+            disabled: isDisabled,
+        }),
+        createElement("label", {}, "Species"),
+        createElement("input", {
+            type: "text",
+            class: "species",
+            value: data.species,
+            disabled: isDisabled,
+        }),
+        createElement("label", {}, "Location"),
+        createElement("input", {
+            type: "text",
+            class: "location",
+            value: data.location,
+            disabled: isDisabled,
+        }),
+        createElement("label", {}, "Bait"),
+        createElement("input", {
+            type: "text",
+            class: "bait",
+            value: data.bait,
+            disabled: isDisabled,
+        }),
+        createElement("label", {}, "Capture Time"),
+        createElement("input", {
+            type: "number",
+            class: "captureTime",
+            value: data.captureTime,
+            disabled: isDisabled,
+        }),
+        createElement(
+            "button",
+            { class: "update", id: data._id, disabled: isDisabled },
+            "Update"
+        ),
+        createElement(
+            "button",
+            { class: "delete", id: data._id, disabled: isDisabled },
+            "Delete"
+        )
+    );
+    return catches;
+}
+function createElement(type, attr, ...content) {
+    const element = document.createElement(type);
+    for (const item in attr) {
+        if (item === "class") {
+            element.classList.add(attr[item]);
+        } else if (item === "disable") {
+            element.disabled = attr[item];
+        } else {
+            element[item] = attr[item];
+        }
+    }
 
-    let div = document.createElement('div');
-
-    div.className = 'catch';
-    div.innerHTML = `
-        <label>Angler</label>
-        <input type="text" class="angler" value="${el.angler}">
-        <label>Weight</label>
-        <input type="text" class="weight" value="${el.weight}">
-        <label>Species</label>
-        <input type="text" class="species" value="${el.species}">
-        <label>Location</label>
-        <input type="text" class="location" value="${el.location}">
-        <label>Bait</label>
-        <input type="text" class="bait" value="${el.bait}">
-        <label>Capture Time</label>
-        <input type="number" class="captureTime" value="${el.captureTime}">
-        <button class="update" data-id="${el._ownerId}">Update</button>
-        <button class="delete" data-id="${el._ownerId}">Delete</button>
-        `
-
-    return div
+    for (let item of content) {
+        if (typeof item === "string" || typeof item === "number") {
+            item = document.createTextNode(item);
+        }
+        element.appendChild(item);
+    }
+    return element;
 }
