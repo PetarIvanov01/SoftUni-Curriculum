@@ -1,5 +1,6 @@
 const regForm = document.querySelector('form');
-document.getElementById('logout').style.display = 'none';
+document.getElementById("user").style.display = "none";
+
 regForm.addEventListener('submit', onRegister)
 
 async function onRegister(event) {
@@ -15,16 +16,14 @@ async function onRegister(event) {
         if (email == '' || password == '') {
             throw new Error('All fields are required')
         }
-        if (password !== rePass) {
+        else if (password !== rePass) {
             throw new Error('Password and rePass must be the same')
         }
 
         const res = await fetch('http://localhost:3030/users/register', {
-            method: 'post',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, rePass })
         });
 
         if (!res.ok) {
@@ -34,12 +33,12 @@ async function onRegister(event) {
 
         const data = await res.json();
         const user = {
-            'email': data.email,
-            'id': data._id,
-            'token': data.accessToken
+            email: data.email,
+            id: data._id,
+            token: data.accessToken
         }
-
         sessionStorage.setItem('user', JSON.stringify(user))
+        
         window.location = './index.html'
 
     }
