@@ -1,5 +1,5 @@
 const loginForm = document.querySelector('form');
-document.getElementById('logout').style.display = 'none';
+document.getElementById("user").style.display = "none";
 loginForm.addEventListener('submit', onLoign)
 
 async function onLoign(event) {
@@ -26,20 +26,20 @@ async function onLoign(event) {
         }
 
         const data = await res.json();
-        const user = {
-            'email': data.email,
-            'id': data._id,
-            'token': data.accessToken
-        }
 
-        sessionStorage.setItem('user', JSON.stringify(user))
+        const userData = {
+          email: data.email,
+          id: data._id,
+          token: data.accessToken,
+        };
+        
+        sessionStorage.setItem('user', JSON.stringify(userData))
         window.location = './index.html'
 
     }
     catch (err) {
-
-        alert(err.message);
         loginForm.reset();
+        alert(err.message);
 
     }
 
