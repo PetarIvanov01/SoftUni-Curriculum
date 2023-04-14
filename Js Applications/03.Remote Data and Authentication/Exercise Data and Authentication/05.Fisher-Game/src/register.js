@@ -1,4 +1,5 @@
 const regForm = document.querySelector('form');
+document.getElementById('logout').style.display = 'none';
 regForm.addEventListener('submit', onRegister)
 
 async function onRegister(event) {
@@ -37,7 +38,7 @@ async function onRegister(event) {
             'id': data._id,
             'token': data.accessToken
         }
-        
+
         sessionStorage.setItem('user', JSON.stringify(user))
         window.location = './index.html'
 
