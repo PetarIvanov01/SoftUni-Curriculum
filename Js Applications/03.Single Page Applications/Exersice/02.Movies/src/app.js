@@ -2,6 +2,7 @@ import { homeView } from "./home.js";
 import { registerView } from "./register.js"
 import { createView } from "./create.js"
 import { loginView } from "./login.js";
+import { updateNav } from "./util.js";
 
 const routes = {
 
@@ -37,7 +38,11 @@ function onNavigate(event) {
 
 
 function logout() {
-    alert('Logged Out!!')
+
+    sessionStorage.removeItem('user');
+    alert('Logged Out!!');
+    loginView();
+    updateNav();
 }
 
 //Start app in catalog view
