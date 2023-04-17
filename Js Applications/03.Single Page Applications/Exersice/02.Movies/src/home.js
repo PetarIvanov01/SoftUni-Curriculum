@@ -1,4 +1,4 @@
-import { detailsView } from "./details.js";
+import { detailsPage } from "./details.js";
 import { showView, spinner, updateNav } from "./util.js";
 
 const section = document.querySelector('#home-page');
@@ -16,7 +16,7 @@ movieSection.addEventListener('click', (event) => {
     event.preventDefault();
     if (event.target.tagName == 'BUTTON') {
         const id = event.target.id;
-        detailsView(id);
+        detailsPage(id);
     }
 
 })

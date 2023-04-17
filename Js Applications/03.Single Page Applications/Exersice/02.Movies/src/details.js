@@ -1,66 +1,108 @@
-import { showView, spinner } from "./util.js";
+import { showView, spinner } from './util.js';
 
-const detailsSec = document.querySelector('#movie-example');
 
-export function detailsView() {
+const section = document.querySelector('#movie-example');
 
-    showView(detailsSec)
-
-}
-document.querySelector('#movie').addEventListener('click', onClick)
-
-async function onClick(event) {
-
-    const target = event.target
-
-    if (target.tagName == 'BUTTON') {
-        event.preventDefault();
-
-        const id = target.id;
-
-        detailsSec.replaceChildren(spinner());
-        const data = await getMovie(id);
-        detailsSec.replaceChildren(createMovieView(data));
-    }
+export function detailsPage(id) {
+    showView(section);
+    displayMovie(id);
 }
 
-async function getMovie(id) {
+async function displayMovie(id) {
+    section.replaceChildren(spinner());
 
-    const res = await fetch('http://localhost:3030/data/movies/' + id);
-    const data = await res.json();
+    const user = JSON.parse(sessionStorage.getItem('user'));
 
-    return data;
+    const [movie, likes, ownLike] = await Promise.all([
+        getMovie(id),
+        getLikes(id),
+        getOwnLike(id, user)
+    ]);
+
+    section.replaceChildren(createMovieCard(movie, user, likes, ownLike));
 }
 
-function createMovieView(data) {
-
+function createMovieCard(movie, user, likes, ownLike) {
     const element = document.createElement('div');
-    element.className = 'row bg-light text-dark';
-
+    element.className = 'container';
     element.innerHTML = `
-    <h1>Movie title: ${data.title}</h1>
-
+    <div class="row bg-light text-dark">
+        <h1>Movie title: ${movie.title}</h1>
         <div class="col-md-8">
-            <img class="img-thumbnail" src="${data.img}"
-                alt="Movie">
+            <img class="img-thumbnail" src="${movie.img}" alt="Movie">
         </div>
         <div class="col-md-4 text-center">
             <h3 class="my-3 ">Movie Description</h3>
-            <p>${data.description}</p>
-            <a class="btn btn-danger" href="#">Delete</a>
-            <a class="btn btn-warning" href="#">Edit</a>
-            <a class="btn btn-primary" href="#">Like</a>
-            <span class="enrolled-span">Liked 1</span>
+            <p>${movie.description}</p>
+            ${createControls(movie, user, ownLike)}
+            <span class="enrolled-span">Liked ${likes}</span>
         </div>
-    `;
+    </div>`;
+
+    const likeBtn = element.querySelector('.like-btn');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', (e) => likeMovie(e, movie._id));
+    }
 
     return element;
-
 }
 
-function buttonNav(id) {
-    
+function createControls(movie, user, ownLike) {
+    const isOwner = user && user._id == movie._ownerId;
 
+    let controls = [];
 
+    if (isOwner) {
+        controls.push('<a class="btn btn-danger" href="#">Delete</a>');
+        controls.push('<a class="btn btn-warning" href="#">Edit</a>');
+    } else if (user && ownLike == false) {
+        controls.push('<a class="btn btn-primary like-btn" href="#">Like</a>');
+    }
 
+    return controls.join('');
+}
+
+async function getMovie(id) {
+    const res = await fetch(`http://localhost:3030/data/movies/${id}`);
+    const movie = await res.json();
+
+    return movie;
+}
+
+async function getLikes(id) {
+    const res = await fetch(`http://localhost:3030/data/likes?where=movieId%3D%22${id}%22&distinct=_ownerId&count`);
+    const likes = await res.json();
+
+    return likes;
+}
+
+async function getOwnLike(movieId, user) {
+    if (!user) {
+        return false;
+    } else {
+        const userId = user._id;
+        const res = await fetch(`http://localhost:3030/data/likes?where=movieId%3D%22${movieId}%22%20and%20_ownerId%3D%22${userId}%22`);
+        const like = await res.json();
+
+        return like.length > 0;
+    }
+}
+
+async function likeMovie(e, movieId) {
+    e.preventDefault();
+
+    const user = JSON.parse(sessionStorage.getItem('user'));
+
+    await fetch('http://localhost:3030/data/likes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Authorization': user.accessToken
+        },
+        body: JSON.stringify({
+            movieId
+        })
+    });
+
+    detailsPage(movieId);
 }
