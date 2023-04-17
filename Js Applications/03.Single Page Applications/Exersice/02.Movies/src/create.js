@@ -19,23 +19,23 @@ async function getMovieData(event) {
     const formData = new FormData(event.currentTarget);
 
     const title = formData.get('title');
-    const desc = formData.get('description');
+    const description = formData.get('description');
     const img = formData.get('imageUrl');
 
-    await sendMovideReq(title, desc, img);
+    await sendMovideReq(title, description, img);
     form.reset();
     homeView();
 
 }
 
-async function sendMovideReq(title, desc, img) {
+async function sendMovideReq(title, description, img) {
 
     try {
         const user = JSON.parse(sessionStorage.getItem('user'));
         if (!user) {
             throw new Error('You are not a user!');
         }
-        if (title.trim() == '' || desc.trim() == '' || img.trim() == '') {
+        if (title.trim() == '' || description.trim() == '' || img.trim() == '') {
             throw new Error('All fields are required!')
         }
 
@@ -45,7 +45,7 @@ async function sendMovideReq(title, desc, img) {
                 "Content-Type": "application/json",
                 "X-Authorization": user.accessToken
             },
-            body: JSON.stringify({ title, desc, img })
+            body: JSON.stringify({ title, description, img })
         })
         if (!res.ok) {
             const error = await res.json();
