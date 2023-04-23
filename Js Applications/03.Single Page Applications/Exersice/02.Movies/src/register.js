@@ -29,7 +29,6 @@ async function onSubmit(event) {
 }
 
 async function sendRegReq(email, password, rePass) {
-    console.log(email,password,rePass);
     try {
         if (email == '' || password == '' || rePass == '') {
             throw new Error('All fields are required!')
