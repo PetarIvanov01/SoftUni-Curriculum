@@ -5,6 +5,7 @@ import { showHome } from "./pages/home.js";
 import { showLogin } from "./pages/login.js";
 import { showRegister } from "./pages/register.js";
 import { initialize } from "./router.js";
+import { doLogout } from "./pages/logout.js"
 
 const links = {
     '/': showHome,
@@ -13,7 +14,7 @@ const links = {
     '/create': showCreate,
     '/details': showDetails,
     '/catalog': showCatalog,
-    // '/logout':logout,
+    '/logout': doLogout,
 }
 
 const views = document.querySelector('#views');

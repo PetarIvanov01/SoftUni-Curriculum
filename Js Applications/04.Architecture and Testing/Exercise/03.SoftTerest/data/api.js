@@ -11,11 +11,19 @@ async function request(method, url, data) {
         option.headers['Content-Type'] = 'application/json';
         option.body = JSON.stringify(data);
     }
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        const token = user.accessToken;
+        option.headers['X-Authorization'] = token
+    }
 
     try {
         const response = await fetch(host + url, option);
 
         if (response.ok != true) {
+            if (response.status == 403) {
+                localStorage.removeItem('user');
+            }
             const err = await response.json()
             throw new Error(err.message);
         }
