@@ -22,6 +22,7 @@ views.remove();
 
 const router = initialize(links);
 
+router.updateNav();
 router.goto('/');
 //Start with Home Page.
 

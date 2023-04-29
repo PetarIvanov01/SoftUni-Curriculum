@@ -7,7 +7,8 @@ export function initialize(links) {
 
     const ctx = {
         showView,
-        goto
+        goto,
+        updateNav
     };
 
     return ctx;
@@ -33,12 +34,24 @@ export function initialize(links) {
         }
 
     }
-    
-    function goto(name) {
+
+    function goto(name,...params) {
 
         const view = links[name];
         if (typeof view == 'function') {
-            view(ctx);
+            view(ctx,...params);
+        }
+    }
+
+    function updateNav() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            navigation.querySelectorAll('.guest').forEach(el => el.style.display = 'none');
+            navigation.querySelectorAll('.user').forEach(el => el.style.display = 'block');
+        }
+        else {
+            navigation.querySelectorAll('.guest').forEach(el => el.style.display = 'block');
+            navigation.querySelectorAll('.user').forEach(el => el.style.display = 'none');
         }
     }
 }

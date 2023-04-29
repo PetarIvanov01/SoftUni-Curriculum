@@ -22,6 +22,8 @@ async function onSubmit(event) {
 
     await sendLogin({ email, password });
 
+    form.reset()
+    ctx.updateNav();
     ctx.goto('/')
 
 }

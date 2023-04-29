@@ -21,7 +21,9 @@ async function onSubmit(event) {
     const password = formData.get('password');
 
     await sendRegister({ email, password });
-
+    
+    form.reset()
+    ctx.updateNav();
     ctx.goto('/')
 
 }
