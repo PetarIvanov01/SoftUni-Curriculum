@@ -12,7 +12,7 @@ function solve() {
       if (event.target.nodeName !== 'BUTTON') return;
 
       if (check) return;
-
+      
       let button = event.target
       //Array.from(button.classList).indexOf('add-product') >= 0
       if (button.textContent !== 'Checkout') {
