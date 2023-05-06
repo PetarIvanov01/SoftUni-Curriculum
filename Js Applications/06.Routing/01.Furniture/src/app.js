@@ -7,12 +7,13 @@ import { loginPage } from "./view/login.js"
 import { registerPage } from "./view/register.js"
 import { getUserData } from "./data/user.js"
 import { logout } from "./data/data.js"
+import { showDetails } from "./view/details.js"
 
 const body = document.body
 
 page(midleware)
 page('/', showHome);
-// page('/details/:id',() => console.log('detials'))
+page('/details/:id',showDetails)
 page('/create', showCreate);
 page('/my-furniture', showMyFurniture);
 // page('/edit/:id',showEdit)

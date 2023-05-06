@@ -2,8 +2,6 @@ import { html } from "../../node_modules/lit-html/lit-html.js"
 import { until } from "../../node_modules/lit-html/directives/until.js"
 import { getData } from "../data/data.js"
 
-
-
 const homeTamplate = (promise) => html`
  <div class="container">
         <div class="row space-top">
@@ -28,7 +26,7 @@ const elementTamplate = (data) => html`
                                 <p>Price: <span>${data.price} $</span></p>
                             </footer>
                             <div>
-                                <a href="/details" class="btn btn-info">Details</a>
+                                <a href="/details/${data._id}" class="btn btn-info">Details</a>
                             </div>
                     </div>
                 </div>
@@ -36,14 +34,14 @@ const elementTamplate = (data) => html`
 
 async function loadElements() {
 
-    const data = await getData()
+    const data = await getData();
 
-    return data.map(elementTamplate)
+    return data.map(elementTamplate);
 }
 
 export function showHome(ctx) {
 
-    ctx.render(homeTamplate(loadElements()))
-
+    ctx.render(homeTamplate(loadElements()));
 
 }
+
