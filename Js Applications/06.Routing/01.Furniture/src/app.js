@@ -1,13 +1,13 @@
 import { render } from "../node_modules/lit-html/lit-html.js"
 import page from "../node_modules/page/page.mjs"
 import { showCreate } from "./view/create.js"
-import { showMyFurniture } from "./view/myFurniter.js"
 import { showHome } from "./view/home.js"
 import { loginPage } from "./view/login.js"
 import { registerPage } from "./view/register.js"
+import { showDetails } from "./view/details.js"
+import { showEdit } from "./view/edit.js"
 import { getUserData } from "./data/user.js"
 import { logout } from "./data/data.js"
-import { showDetails } from "./view/details.js"
 
 const body = document.body
 
@@ -15,13 +15,13 @@ page(midleware)
 page('/', showHome);
 page('/details/:id',showDetails)
 page('/create', showCreate);
-page('/my-furniture', showMyFurniture);
-// page('/edit/:id',showEdit)
+page('/my-furniture', showHome);
+page('/edit/:id',showEdit)
 page('/login', loginPage);
 page('/register', registerPage);
 
 page.start();
-update()
+update();
 
 function midleware(ctx, next) {
 

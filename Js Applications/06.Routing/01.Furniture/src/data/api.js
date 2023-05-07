@@ -60,7 +60,7 @@ export async function post(url, data) {
 
 export async function put(url, data) {
 
-    return request(url, createOptions('POST', data));
+    return request(url, createOptions('PUT', data));
 
 }
 
