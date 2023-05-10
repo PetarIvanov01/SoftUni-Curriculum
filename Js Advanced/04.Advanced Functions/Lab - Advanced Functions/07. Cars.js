@@ -7,6 +7,7 @@ function create(input) {
         let parent = parentName ? object[parentName] : null;
         object[name] = Object.create(parent);
 
+        
     }
 
     let set = (name, key, value) => {
