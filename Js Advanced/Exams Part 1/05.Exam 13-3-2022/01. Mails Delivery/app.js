@@ -52,7 +52,6 @@ function solve() {
                 else {
                     element[prop] = atrib[prop]
                 }
-                console.log(atrib[prop] + ' ' + prop);
             };
         };
         for (let el of content) {
