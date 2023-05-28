@@ -2,7 +2,8 @@ import { html } from "../data/util.js";
 
 export function homePage(ctx) {
 
-    ctx.render(homeTamplate())
+  ctx.update();
+  ctx.render(homeTamplate())
 
 }
 
