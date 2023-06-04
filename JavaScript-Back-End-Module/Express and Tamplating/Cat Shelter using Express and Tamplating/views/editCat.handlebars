@@ -1,0 +1,21 @@
+<h1>Cat Shelter</h1>
+</header>
+<main>
+    <form action="/edit/cat/{{cat.id}}" method="post" class="cat-form">
+        <h2>Edit Cat</h2>
+        <label for="name">Name</label>
+        <input name="name" type="text" id="name" value="{{cat.name}}">
+        <label for="description">Description</label>
+        <textarea name="description" id="description">{{cat.description}}</textarea>
+        <label for="imageHref">Image Href:</label>
+        <input type="text" id="imageHref" name="imageHref" value="{{cat.image}}">
+        <label for="group">Breed</label>
+        <select name="breed" id="group">
+            <option value="{{cat.breed}}">{{cat.breed}}</option>
+            {{#each breed}}
+            <option value="{{breed}}">{{breed}}</option>
+            {{/each}}
+        </select>
+        <button>Edit Cat</button>
+    </form>
+</main>
