@@ -1,6 +1,3 @@
-# SoftUni Modules
-
-## About My Learning
 
 ### Module 1: JavaScript Advanced
 
