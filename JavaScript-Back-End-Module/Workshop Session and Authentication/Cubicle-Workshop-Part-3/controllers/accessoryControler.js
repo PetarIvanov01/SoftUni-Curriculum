@@ -5,7 +5,10 @@ const router = require('express').Router();
 //Create Accessory Page
 router.get('/', (req, res) => {
 
-    res.render('accessory/createAcc');
+    const user = req.user;
+    res.render('accessory/createAcc',{
+        isUser:user
+    });
 
 });
 

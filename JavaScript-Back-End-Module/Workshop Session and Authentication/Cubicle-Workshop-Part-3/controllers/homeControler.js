@@ -6,9 +6,11 @@ const router = require('express').Router();
 router.get('/', async (req, res) => {
 
     const items = await getAllItems()
+    const user = req.user;
     res.render('index', {
         title: 'Home Page',
-        items: items
+        items: items,
+        isUser: user
     })
 
 })

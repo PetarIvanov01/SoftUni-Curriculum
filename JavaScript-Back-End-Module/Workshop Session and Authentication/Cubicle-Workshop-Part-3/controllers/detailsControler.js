@@ -6,6 +6,7 @@ const router = require('express').Router();
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
+    const user = req.user;
     const item = await getById(id);
     const cube = await getPopulatedAcc(id);
 
@@ -15,6 +16,7 @@ router.get('/:id', async (req, res) => {
     else {
 
         res.render('details', {
+            isUser: user,
             title: 'Details Page',
             cube: item,
             accessories: cube.accessories
