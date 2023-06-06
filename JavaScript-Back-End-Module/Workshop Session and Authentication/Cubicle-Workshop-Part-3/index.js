@@ -17,6 +17,7 @@ async function start() {
         extname: '.hbs'
     });
 
+    const authMiddleware = require('./controllers/middlewares/authControler')
     const homeControler = require('./controllers/homeControler');
     const createControler = require('./controllers/createControler');
     const detailsControler = require('./controllers/detailsControler');
@@ -31,6 +32,7 @@ async function start() {
     app.use(express.urlencoded({ extended: true }))
     app.use('/static', express.static('static'));
 
+    app.use(authMiddleware)
     app.use(homeControler);
     app.use('/create',createControler);
     app.use('/details', detailsControler);
