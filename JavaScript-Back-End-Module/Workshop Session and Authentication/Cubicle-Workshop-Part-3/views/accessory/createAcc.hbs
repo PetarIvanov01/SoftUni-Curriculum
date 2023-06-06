@@ -1,12 +1,32 @@
-<h1>Create Accessory</h1>
-            <div class="form">
-                <form action="/accessory/create" method="POST">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name">
-                    <label for="name">Description</label>
-                    <textarea id="description" name="description"></textarea>
-                    <label for="image">ImageUrl</label>
-                    <input type="text" id="image" name="imageUrl">
-                    <input type="submit" value="Create">
-                </form>
-            </div>
+<div class="container">
+    <header>
+        <ul>
+            <li><img class="logo" src="/static/images/logo.png"></li>
+            <li><a href="/">Browse</a></li>
+            <li><a href="/about">About</a></li>
+            {{#if isUser}}
+            <li><a href="/create">Add a Cube</a></li>
+            <li><a href="/accessory">Add Accessory</a></li>
+            <li><a href="/logout">Logout</a></li>
+            {{else}}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            {{/if}}
+        </ul>
+    </header>
+
+    <main>
+        <h1>Create Accessory</h1>
+        <div class="form">
+            <form action="/accessory/create" method="POST">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name">
+                <label for="name">Description</label>
+                <textarea id="description" name="description"></textarea>
+                <label for="image">ImageUrl</label>
+                <input type="text" id="image" name="imageUrl">
+                <input type="submit" value="Create">
+            </form>
+        </div>
+    </main>
+</div>
