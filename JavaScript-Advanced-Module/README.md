@@ -1,7 +1,3 @@
-# SoftUni Modules
-
-## About My Learning
-
 ### Module 1: JavaScript Advanced
 
 During this module, I gained advanced knowledge of JavaScript that includes:
