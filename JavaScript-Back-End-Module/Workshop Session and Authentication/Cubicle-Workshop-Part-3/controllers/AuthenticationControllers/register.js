@@ -4,7 +4,11 @@ const router = require('express').Router();
 
 router.get('/register', (req, res) => {
 
-    res.render('user/register');
+    const isExist = req.session.userErr;
+    req.session.userErr = null
+    res.render('user/register', {
+        error: isExist
+    });
 
 })
 
@@ -20,13 +24,14 @@ router.post('/register', async (req, res) => {
 
         const token = await registerUser(username, password);
 
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('jwt', token);
+
         res.redirect('/')
 
-
     } catch (error) {
-        console.error(error.message);
-        throw error;
+
+        req.session.userErr = error.message
+        res.redirect('/register');
     }
 });
 
