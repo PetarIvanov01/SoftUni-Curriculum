@@ -6,8 +6,8 @@ const router = require('express').Router();
 router.get('/', (req, res) => {
 
     const user = req.user;
-    res.render('accessory/createAcc',{
-        isUser:user
+    res.render('accessory/createAcc', {
+        isUser: user
     });
 
 });
@@ -24,11 +24,13 @@ router.post('/create', async (req, res) => {
 //Accessory page to attach
 router.get('/:id/attach', async (req, res) => {
 
+    const user = req.user;
     const id = req.params.id;
     const cube = await getById(id);
     const accessories = await getAccessory(id, cube);
 
     res.render('accessory/attach', {
+        isUser: user,
         item: cube,
         accessories
     })
