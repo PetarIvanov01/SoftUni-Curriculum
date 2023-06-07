@@ -7,6 +7,7 @@ router.get('/', async (req, res) => {
 
     const items = await getAllItems()
     const user = req.user;
+    
     res.render('index', {
         title: 'Home Page',
         items: items,
@@ -17,9 +18,10 @@ router.get('/', async (req, res) => {
 
 //About Page
 router.get('/about', (req, res) => {
-
+    const user = req.user;
     res.render('about', {
-        title: 'About Page'
+        title: 'About Page',
+        isUser: user
     });
 })
 
