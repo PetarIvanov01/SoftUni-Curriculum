@@ -12,7 +12,6 @@ const authentication = (req, res, next) => {
         } catch (error) {
 
             res.clearCookie('jwt');
-            // res.cookie('jwt', '', { maxAge: 0 })
             return res.redirect('/login')
         }
     }
