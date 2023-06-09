@@ -29,19 +29,26 @@ async function createItem(type, data, user) {
 }
 
 async function getById(id) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid ID');
+    }
 
-    let result = Cube.findById(id).lean();
+    let result = await Cube.findById(id).lean();
 
-    return result
-
+    return result;
 }
 
 async function deleteById(id) {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid ID');
+    }
 
     await Cube.deleteOne({ _id: id })
 }
 
 async function getAllItems() {
+
 
     const items = Cube.find({}).lean();
 
@@ -70,11 +77,19 @@ async function getAccessory(currCube) {
 
 async function getPopulatedAcc(id) {
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid ID');
+    }
+
     const accessories = Cube.findById(id).populate('accessories').lean();
     return accessories
 }
 
 async function getAccessoryById(id) {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid ID');
+    }
 
     const accessorie = Accessory.findById(id).lean();
     return accessorie
@@ -82,11 +97,19 @@ async function getAccessoryById(id) {
 
 async function getDocument(id) {
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid ID');
+    }
+
     return Cube.findById(id)
 }
 
 async function updateById(id, newData) {
     try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw new Error('Invalid ID');
+        }
+        
         const item = await Cube.findById(id);
 
         if (item) {
