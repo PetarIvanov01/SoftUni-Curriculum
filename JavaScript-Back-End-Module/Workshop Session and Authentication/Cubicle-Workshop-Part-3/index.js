@@ -19,13 +19,14 @@ async function start() {
         extname: '.hbs'
     });
 
+    const updateNav = require('./controllers/middlewares/updateNav');
     const authMiddleware = require('./controllers/middlewares/authControler');
     const homeControler = require('./controllers/homeControler');
     const createControler = require('./controllers/createControler');
     const detailsControler = require('./controllers/detailsControler');
     const accessoryControler = require('./controllers/accessoryControler');
-    const loginControler = require('./controllers/AuthenticationControllers/login')
-    const registerControler = require('./controllers/AuthenticationControllers/register')
+    const loginControler = require('./controllers/AuthenticationControllers/login');
+    const registerControler = require('./controllers/AuthenticationControllers/register');
     const notFoundPage = require('./controllers/notFound');
 
 
@@ -43,6 +44,8 @@ async function start() {
         saveUninitialized: true,
     }));
     app.use(cookieParser());
+
+    app.use(updateNav);
     app.use(authMiddleware);
     app.use(homeControler);
     app.use(loginControler);
