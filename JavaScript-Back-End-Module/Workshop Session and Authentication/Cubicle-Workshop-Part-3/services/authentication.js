@@ -3,6 +3,8 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+const secretKey = 'secretKey';
+
 async function registerUser(username, password) {
 
     try {
@@ -19,7 +21,7 @@ async function registerUser(username, password) {
         const savedUser = await user.save();
         const userId = savedUser._id;
 
-        const token = jwt.sign({ userId }, 'secretKey');
+        const token = jwt.sign({ userId }, secretKey);
         return token
 
     } catch (error) {
@@ -38,24 +40,21 @@ async function loginUser(username, password) {
         }
         const userId = user._id;
 
-        const token = jwt.sign({ userId }, 'secretKey');
+        const token = jwt.sign({ userId }, secretKey);
         return token
 
     } catch (error) {
-        
+
         throw error
     }
 }
-
-
 
 async function compareHash(password, hash) {
     return bcrypt.compare(password, hash);
 }
 
-
 async function hashedFunc(password) {
     return bcrypt.hash(password, 10);
 }
 
-module.exports = { registerUser, compareHash, loginUser }
+module.exports = { registerUser, compareHash, loginUser}
