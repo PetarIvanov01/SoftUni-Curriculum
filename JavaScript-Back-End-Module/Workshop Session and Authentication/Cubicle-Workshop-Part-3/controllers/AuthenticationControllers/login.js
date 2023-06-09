@@ -3,11 +3,16 @@ const { loginUser } = require('../../services/authentication')
 
 router.get('/login', (req, res) => {
 
-    const isExist = req.session.userErr;
-    req.session.userErr = null
-    res.render('user/login', {
-        error: isExist
-    });
+    try {
+        const isExist = req.session.userErr;
+        req.session.userErr = null
+        res.render('user/login', {
+            error: isExist
+        });
+
+    } catch (error) {
+        console.error(error.message);
+    }
 })
 
 router.post('/login', async (req, res) => {
