@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     const user = req.user
     res.render('create', {
         isUser: user,
-        title: 'Create Page'
+        title: 'Create Page',
     });
 })
 
@@ -15,7 +15,9 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
 
     const body = req.body;
-    const id = await createItem('cube', body);
+    const user = req.user;
+
+    const id = await createItem('cube', body, user);
     res.redirect('/details/' + id);
 
 })
