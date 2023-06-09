@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { hashedFunc, loginUser } = require('../../services/authentication')
+const { loginUser } = require('../../services/authentication')
 
 router.get('/login', (req, res) => {
 
@@ -27,9 +27,5 @@ router.post('/login', async (req, res) => {
         req.session.userErr = error.message
         res.redirect('/login');
     }
-
-
 })
-
-
 module.exports = router;
