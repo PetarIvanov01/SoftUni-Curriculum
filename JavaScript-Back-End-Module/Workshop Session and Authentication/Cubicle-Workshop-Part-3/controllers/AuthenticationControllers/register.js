@@ -15,10 +15,10 @@ router.get('/register', (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const { username, password, repeatPassword } = req.body;
-        if (username == '' || password == '') {
+        if (username.trim() == '' || password.trim() == '') {
             throw new Error('All fields are required!');
         }
-        if (password != repeatPassword) {
+        if (password.trim() != repeatPassword.trim()) {
             throw new Error('Passwords must be the same!');
         }
 
