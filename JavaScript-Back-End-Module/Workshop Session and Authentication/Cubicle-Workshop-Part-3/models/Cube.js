@@ -4,7 +4,7 @@ const cubeScheme = mongoose.Schema({
     id: Number,
     name: { type: String, required: true },
     description: { type: String, required: true, min: 10, max: 50 },
-    imageUrl: { type: String, required: true },
+    imageUrl: { type: String, required: true, match: [/^https?:\/\//, 'Invalid URL'], },
     difficulty: { type: Number, min: 1, max: 6 },
     accessories: [{
         type: mongoose.Types.ObjectId,
