@@ -18,5 +18,21 @@ const authentication = (req, res, next) => {
     next();
 };
 
+const preAuthForDetails = (req, res, next) => {
 
-module.exports = authentication 
+    const user = req.user;
+    try {
+        if (user == undefined) {
+            throw new Error('Only for users!');
+        }
+
+        next();
+
+    }
+    catch (error) {
+        res.redirect('/login');
+        throw error.message;
+    }
+}
+
+module.exports = { authentication, preAuthForDetails } 
