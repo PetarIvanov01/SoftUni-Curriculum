@@ -27,8 +27,8 @@ async function start() {
     const accessoryControler = require('./controllers/accessoryControler');
     const loginControler = require('./controllers/AuthenticationControllers/login');
     const registerControler = require('./controllers/AuthenticationControllers/register');
+    const logoutControler = require('./controllers/AuthenticationControllers/logout');
     const notFoundPage = require('./controllers/notFound');
-
 
     const app = express();
 
@@ -38,6 +38,7 @@ async function start() {
     app.use(express.urlencoded({ extended: true }))
     app.use('/static', express.static('static'));
 
+    //Util
     app.use(session({
         secret: 'your-secret-key',
         resave: false,
@@ -45,11 +46,15 @@ async function start() {
     }));
     app.use(cookieParser());
 
+    //Middlewares
     app.use(updateNav);
     app.use(authMiddleware);
+
+    //Controlers
     app.use(homeControler);
     app.use(loginControler);
     app.use(registerControler);
+    app.use(logoutControler);
     app.use('/create', createControler);
     app.use('/details', detailsControler);
     app.use('/accessory', accessoryControler);
