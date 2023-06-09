@@ -1,46 +1,26 @@
-<div class="container">
-  <header>
-    <ul>
-      <li><img class="logo" src="/static/images/logo.png"></li>
-      <li><a href="/">Browse</a></li>
-      <li><a href="/about">About</a></li>
-      {{#if isUser}}
-      <li><a href="/create">Add a Cube</a></li>
-      <li><a href="/accessory">Add Accessory</a></li>
-      <li><a href="/logout">Logout</a></li>
-      {{else}}
-      <li><a href="/login">Login</a></li>
-      <li><a href="/register">Register</a></li>
-      {{/if}}
-    </ul>
-  </header>
+<h1>{{cube.name}}</h1>
+<img class="cube" src="{{cube.imageUrl}}">
+<div class="details">
+  <p><span>Description:</span>{{cube.description}}</p>
+  <p><span>Difficulty level:</span> {{cube.difficulty}}</p>
+  <a class="btn" href="/">Back</a>
+  <a class="btn" href="/accessory/{{cube._id}}/attach">Attach</a>
+</div>
 
-  <main>
-    <h1>{{cube.name}}</h1>
-    <img class="cube" src="{{cube.imageUrl}}">
-    <div class="details">
-      <p><span>Description:</span>{{cube.description}}</p>
-      <p><span>Difficulty level:</span> {{cube.difficulty}}</p>
-      <a class="btn" href="/">Back</a>
-      <a class="btn" href="/accessory/{{cube._id}}/attach">Attach</a>
-    </div>
+<h2>Accessories</h2>
+<div class="accessories">
+  {{#if accessories}}
+  {{#each accessories}}
 
-    <h2>Accessories</h2>
-    <div class="accessories">
-      {{#if accessories}}
-      {{#each accessories}}
+  <div class="accessory">
+    <img src="{{imageUrl}}" alt="{{name}}">
+    <h3>{{name}}</h3>
+    <p>{{description}}</p>
+  </div>
 
-      <div class="accessory">
-        <img src="{{imageUrl}}" alt="{{name}}">
-        <h3>{{name}}</h3>
-        <p>{{description}}</p>
-      </div>
+  {{/each}}
 
-      {{/each}}
-
-      {{else}}
-      <h3 class="italic">This cube has no accessories yet...</h3>
-      {{/if}}
-    </div>
-  </main>
+  {{else}}
+  <h3 class="italic">This cube has no accessories yet...</h3>
+  {{/if}}
 </div>
