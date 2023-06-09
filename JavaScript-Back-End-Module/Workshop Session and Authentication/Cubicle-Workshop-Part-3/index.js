@@ -20,7 +20,7 @@ async function start() {
     });
 
     const updateNav = require('./controllers/middlewares/updateNav');
-    const authMiddleware = require('./controllers/middlewares/authControler');
+    const { authentication, preAuthForDetails } = require('./controllers/middlewares/authControler');
     const homeControler = require('./controllers/homeControler');
     const createControler = require('./controllers/createControler');
     const detailsControler = require('./controllers/detailsControler');
@@ -48,16 +48,16 @@ async function start() {
 
     //Middlewares
     app.use(updateNav);
-    app.use(authMiddleware);
+    app.use(authentication);
 
     //Controlers
     app.use(homeControler);
     app.use(loginControler);
     app.use(registerControler);
     app.use(logoutControler);
-    app.use('/create', createControler);
-    app.use('/details', detailsControler);
-    app.use('/accessory', accessoryControler);
+    app.use('/create', preAuthForDetails, createControler);
+    app.use('/details', preAuthForDetails, detailsControler);
+    app.use('/accessory', preAuthForDetails, accessoryControler);
     app.use(notFoundPage);
 
     app.listen(3000, () => console.log('The server is running on port 3000.'));
