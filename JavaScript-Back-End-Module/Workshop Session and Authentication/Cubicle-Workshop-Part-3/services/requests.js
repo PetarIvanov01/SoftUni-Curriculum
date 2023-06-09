@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Cube = require('../models/Cube');
-const Accessory = require('../models/Accessories')
+const Accessory = require('../models/Accessories');
 
-async function createItem(type, data) {
+async function createItem(type, data, user) {
 
     let result;
     if (type == 'acc') {
@@ -19,7 +19,8 @@ async function createItem(type, data) {
             name: data.name,
             description: data.description,
             imageUrl: data.imageUrl,
-            difficulty: Number(data.difficultyLevel)
+            difficulty: Number(data.difficultyLevel),
+            creatorId: user.userId
         })
     }
     await result.save();
@@ -33,6 +34,11 @@ async function getById(id) {
 
     return result
 
+}
+
+async function deleteById(id) {
+
+    await Cube.deleteOne({ _id: id })
 }
 
 async function getAllItems() {
@@ -79,5 +85,27 @@ async function getDocument(id) {
     return Cube.findById(id)
 }
 
-module.exports = { getDocument, getAllItems, getBySearch, createItem, getById, getAccessory, getPopulatedAcc, getAccessoryById };
+async function updateById(id, newData) {
+    try {
+        const item = await Cube.findById(id);
+
+        if (item) {
+            item.name = newData.name;
+            item.description = newData.description;
+            item.imageUrl = newData.imageUrl;
+            item.difficulty = Number(newData.difficultyLevel);
+
+            await item.save();
+            console.log('Item updated successfully');
+            return item._id
+
+        } else {
+            throw new Error('Item not Found');
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports = { updateById, deleteById, getDocument, getAllItems, getBySearch, createItem, getById, getAccessory, getPopulatedAcc, getAccessoryById };
 
