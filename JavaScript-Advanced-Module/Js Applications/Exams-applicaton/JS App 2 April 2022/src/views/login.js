@@ -1,14 +1,37 @@
+import { login } from '../api/auth.js';
 import { html, render } from '../util/lib.js'
 
 export function loginControler(ctx) {
 
-    ctx.render(template());
+    ctx.render(template(onSubmit));
+
+    async function onSubmit(event) {
+
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        try {
+            const email = formData.get('email').trim();
+            const password = formData.get('password').trim();
+
+            if (email == '' || password == '') {
+                throw new Error('All fields are required!');
+            }
+
+            await login(email, password);
+            ctx.updateNav();
+            ctx.page.redirect('/');
+
+        } catch (error) {
+            alert(error.message)
+        }
+    }
 }
-const template = () => html`
+const template = (event) => html`
 <!--Login Page-->
 <section id="loginPage">
-    <form class="loginForm">
-        <img src="./images/logo.png" alt="logo" />
+    <form class="loginForm" @submit=${event}>
+        <img src="/images/logo.png" alt="logo" />
         <h2>Login</h2>
 
         <div>
@@ -24,7 +47,7 @@ const template = () => html`
         <button class="btn" type="submit">Login</button>
 
         <p class="field">
-            <span>If you don't have profile click <a href="#">here</a></span>
+            <span>If you don't have profile click <a href="/register">here</a></span>
         </p>
     </form>
 </section>`

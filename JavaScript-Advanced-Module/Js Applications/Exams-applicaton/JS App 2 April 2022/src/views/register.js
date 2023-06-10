@@ -1,13 +1,40 @@
-import { html, render } from '../util/lib.js'
+import { register } from '../api/auth.js';
+import { html } from '../util/lib.js'
 
 export function registerControler(ctx) {
 
-    ctx.render(template());
+    ctx.render(template(onSubmit));
+
+    async function onSubmit(event) {
+
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        try {
+            const email = formData.get('email').trim();
+            const password = formData.get('password').trim();
+            const rePass = formData.get('repeatPassword').trim();
+
+            if (email == '' || password == '') {
+                throw new Error('All fields are required!');
+            }
+            if (password != rePass) {
+                throw new Error('Passwords must be the same!');
+            }
+
+            await register(email, password);
+            ctx.updateNav();
+            ctx.page.redirect('/');
+
+        } catch (error) {
+            alert(error.message)
+        }
+    }
 }
-const template = () => html` <!--Register Page-->
+const template = (event) => html` <!--Register Page-->
 <section id="registerPage">
-    <form class="registerForm">
-        <img src="./images/logo.png" alt="logo" />
+    <form class="registerForm" @submit=${event}>
+        <img src="/images/logo.png" alt="logo" />
         <h2>Register</h2>
         <div class="on-dark">
             <label for="email">Email:</label>
@@ -27,7 +54,7 @@ const template = () => html` <!--Register Page-->
         <button class="btn" type="submit">Register</button>
 
         <p class="field">
-            <span>If you have profile click <a href="#">here</a></span>
+            <span>If you have profile click <a href="/login">here</a></span>
         </p>
     </form>
 </section>
