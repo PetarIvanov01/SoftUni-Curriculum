@@ -1,8 +1,8 @@
-import { clearUserData, getUserData } from "./user";
+import { clearUserData, getUserData } from "./user.js";
 
 let host = 'http://localhost:3030/';
 
-async function request(url) {
+async function request(url,option) {
 
     try {
         const request = await fetch(host + url, option);
@@ -29,7 +29,7 @@ async function request(url) {
 
 }
 
-function createOptions(method = 'GET', data) {
+function createOptions(method, data) {
 
     try {
         const options = {

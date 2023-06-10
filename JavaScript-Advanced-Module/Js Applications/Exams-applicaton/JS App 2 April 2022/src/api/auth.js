@@ -3,9 +3,9 @@ import { clearUserData, setUserData } from "../../src/api/user.js";
 
 
 const endpoints = {
-    register: '/users/register',
-    login: '/users/login',
-    logout: '/users/logout',
+    register: 'users/register',
+    login: 'users/login',
+    logout: 'users/logout',
 };
 
 export async function login(email, password) {
