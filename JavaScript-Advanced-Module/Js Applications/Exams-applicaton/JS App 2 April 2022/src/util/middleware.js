@@ -15,7 +15,7 @@ export function withRenderMiddleware(ctx, next) {
 export function setUser(ctx, next) {
 
     const user = getUserData();
-    ctx.user = user;
+    ctx.user = user || undefined;
 
     next();
 }
