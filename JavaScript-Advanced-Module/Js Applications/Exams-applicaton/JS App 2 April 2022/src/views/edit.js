@@ -64,7 +64,7 @@ async function onSubmit(event) {
             throw new Error('All fields are required!')
         }
         await editPet(id, data);
-        context.page.redirect('/');
+        context.page.redirect('/details/' + id);
 
     } catch (error) {
         alert(error.message);

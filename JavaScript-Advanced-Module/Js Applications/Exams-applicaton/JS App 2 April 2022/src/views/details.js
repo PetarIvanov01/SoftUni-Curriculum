@@ -51,8 +51,8 @@ async function getItem() {
         getOwnDonations(item._id, context.user.id),
         getByIdDonations(item._id)
     ])
-
-    return itemTemplate(item, isOwner, isUser, isDonated, total);
+    let totalDonations = Number(total) * 100
+    return itemTemplate(item, isOwner, isUser, isDonated, totalDonations);
 }
 
 //Delete functionality
