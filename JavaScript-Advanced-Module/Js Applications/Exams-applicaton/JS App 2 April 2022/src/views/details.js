@@ -1,31 +1,75 @@
-import { html, render } from '../util/lib.js'
+import { deleteItem, getByIdDonations, getDetails, getOwnDonations, sendDonations } from '../api/apiPets.js';
+import { html, until } from '../util/lib.js'
 
+let id;
+let context;
 export function detailsControler(ctx) {
 
-    ctx.render(template());
+    id = ctx.params.id;
+    context = ctx;
+    ctx.render(template(getItem()));
+
 }
-const template = () => html` <!--Details Page-->
+
+const template = (promise) => html`
+ <!--Details Page-->
 <section id="detailsPage">
     <div class="details">
-        <div class="animalPic">
-            <img src="./images/Shiba-Inu.png">
+    ${until(promise, html`<div>Loading....</div>`)}
+    </div>
+</section>`
+
+const itemTemplate = (item, isOwner, isUser, isDonated, total) => html`
+<div class="animalPic">
+            <img src="${item.image}">
         </div>
         <div>
             <div class="animalInfo">
-                <h1>Name: Max</h1>
-                <h3>Breed: Shiba Inu</h3>
-                <h4>Age: 2 years</h4>
-                <h4>Weight: 5kg</h4>
-                <h4 class="donation">Donation: 0$</h4>
+                <h1>Name: ${item.name}</h1>
+                <h3>Breed: ${item.breed}</h3>
+                <h4>Age: ${item.age} years</h4>
+                <h4>Weight: ${item.weight}</h4>
+                <h4 class="donation">Donation: ${total}$</h4>
             </div>
-            <!-- if there is no registered user, do not display div-->
-            <div class="actionBtn">
-                <!-- Only for registered user and creator of the pets-->
-                <a href="#" class="edit">Edit</a>
-                <a href="#" class="remove">Delete</a>
-                <!--(Bonus Part) Only for no creator and user-->
-                <a href="#" class="donate">Donate</a>
+
+            ${isUser ? (html` <div class="actionBtn">
+        ${isOwner ? html`<a href="/edit/${item._id}" class="edit">Edit</a>
+            <a href="#" @click=${onDelete} class="remove">Delete</a>`
+            : isDonated ? undefined : html`<a href="#" @click=${onDonate} class="donate">Donate</a>`}
+        </div>`)
+        : undefined}
             </div>
-        </div>
-    </div>
-</section>`
+        </div>`
+
+//Geting the details for the view
+async function getItem() {
+    const item = await getDetails(id);
+    const isOwner = context.user ? context.user.id == item._ownerId : false;
+    const isUser = context.user ? true : false;
+
+    const [isDonated, total] = await Promise.all([
+        getOwnDonations(item._id, context.user.id),
+        getByIdDonations(item._id)
+    ])
+
+    return itemTemplate(item, isOwner, isUser, isDonated, total);
+}
+
+//Delete functionality
+async function onDelete(event) {
+    event.preventDefault();
+    const conf = confirm('Are you sure you want to delete this item?');
+    if (conf) {
+        await deleteItem(id)
+        context.page.redirect('/');
+    }
+}
+
+//Donate functionality
+async function onDonate(event) {
+    event.preventDefault();
+
+    await sendDonations({ petId: id });
+    alert('You donate successfully');
+    context.page.redirect(`/details/${id}`);
+}
