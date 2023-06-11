@@ -13,6 +13,7 @@ import { registerControler } from './views/register.js';
 page(setUser);
 page(withRenderMiddleware);
 
+page('/index.html',homeControler)
 page('/', homeControler);
 page('/catalog', catalogControler);
 page('/create', createControler);
