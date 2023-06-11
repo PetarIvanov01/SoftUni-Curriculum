@@ -13,7 +13,7 @@ const template = () => html`
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
         </article>
         <article class="welcome-content-image">
-            <img src="./images/header-dog.png" alt="dog">
+            <img src="/images/header-dog.png" alt="dog">
         </article>
     </section>
 `
