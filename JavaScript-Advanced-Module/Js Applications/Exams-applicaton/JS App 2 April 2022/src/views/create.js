@@ -1,13 +1,46 @@
+import { createPet } from '../api/apiPets.js';
 import { html, render } from '../util/lib.js'
 
 export function createControler(ctx) {
 
-    ctx.render(template());
+    ctx.render(template(onSubmit));
+
+    async function onSubmit(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        try {
+            const data = {
+                name: formData.get('name'),
+                breed: formData.get('breed'),
+                age: formData.get('age'),
+                weight: formData.get('weight'),
+                image: formData.get('image'),
+            }
+            if (Object.values(data).some(el => el == '')) {
+                throw new Error('All fields are required!')
+            }
+            await createPet(data);
+            ctx.page.redirect('/');
+
+        } catch (error) {
+            alert(error.message);
+        }
+        const data = {
+            name: formData.get('name'),
+            breed: formData.get('breed'),
+            age: formData.get('age'),
+            weight: formData.get('weight'),
+            image: formData.get('image'),
+        }
+
+    }
 }
-const template = () => html`<!--Create Page-->
+const template = (event) => html`
+<!--Create Page-->
 <section id="createPage">
-    <form class="createForm">
-        <img src="./images/cat-create.jpg">
+    <form class="createForm" @submit=${event}>
+        <img src="/images/cat-create.jpg">
         <div>
             <h2>Create PetPal</h2>
             <div class="name">
