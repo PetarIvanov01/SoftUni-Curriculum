@@ -1,5 +1,5 @@
 import { createPet } from '../api/apiPets.js';
-import { html} from '../util/lib.js'
+import { html } from '../util/lib.js'
 
 export function createControler(ctx) {
 
@@ -25,15 +25,8 @@ export function createControler(ctx) {
 
         } catch (error) {
             alert(error.message);
+            throw error;
         }
-        const data = {
-            name: formData.get('name'),
-            breed: formData.get('breed'),
-            age: formData.get('age'),
-            weight: formData.get('weight'),
-            image: formData.get('image'),
-        }
-
     }
 }
 const template = (event) => html`
