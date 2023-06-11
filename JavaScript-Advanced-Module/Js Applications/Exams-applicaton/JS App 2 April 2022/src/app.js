@@ -1,4 +1,5 @@
 import page from '../node_modules/page/page.mjs'
+import { logout } from './api/auth.js';
 import { setUser, withRenderMiddleware } from './util/middleware.js';
 import { catalogControler } from './views/catalog.js';
 import { createControler } from './views/create.js';
@@ -13,11 +14,15 @@ page(setUser);
 page(withRenderMiddleware);
 
 page('/', homeControler);
-page('/catalog',catalogControler);
-page('/create',createControler);
-page('/details/:id',detailsControler);
-page('/edit/:id',editControler);
-page('/login',loginControler);
-page('/register',registerControler);
+page('/catalog', catalogControler);
+page('/create', createControler);
+page('/details/:id', detailsControler);
+page('/edit/:id', editControler);
+page('/login', loginControler);
+page('/logout', async (ctx) => {
+    await logout(ctx)
+})
+page('/register', registerControler);
 
 page.start();
+
