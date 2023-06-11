@@ -1,5 +1,5 @@
 import { createPet } from '../api/apiPets.js';
-import { html, render } from '../util/lib.js'
+import { html} from '../util/lib.js'
 
 export function createControler(ctx) {
 
