@@ -32,10 +32,10 @@ async function registerUser(username, password) {
 }
 async function loginUser(username, password) {
 
-    const user = await User.findOne({ username: { $regex: new RegExp('^' + username + '$', 'i') } });
+    const user = await User.findOne({ username: { $regex: new RegExp('^' + username + '$', 'i') } }).lean();
 
     try {
-        if (user == undefined || compareHash(password, user.password) == false) {
+        if (user == undefined || await compareHash(password, user.password) == false) {
             throw new Error('Invalid username or password!');
         }
         const userId = user._id;
