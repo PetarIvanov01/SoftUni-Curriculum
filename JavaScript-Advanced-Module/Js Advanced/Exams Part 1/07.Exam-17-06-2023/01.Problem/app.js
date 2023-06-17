@@ -1,123 +1,102 @@
 window.addEventListener('load', solve);
 
-window.addEventListener('load', solve);
- 
 function solve() {
-    // get input
-    const inputs = {
-        model: document.querySelector('#car-model'),
-        year: document.querySelector('#car-year'),
-        partName: document.querySelector('#part-name'),
-        partNumber: document.querySelector('#part-number'),
-        condition: document.querySelector('#condition')
-    };
- 
-    const infoList = document.querySelector('ul.info-list');
-    const confirmList = document.querySelector('ul.confirm-list');
+
     const nextButton = document.querySelector('#next-btn');
- 
-    nextButton.addEventListener('click', (e) => {
-        e.preventDefault();
- 
-        if (inputs.model.value == '' ||
-            inputs.year.value == '' ||
-            inputs.partName.value == '' ||
-            inputs.partNumber.value == '' ||
-            (Number(inputs.year.value) < 1980 &&
-                Number(inputs.year.value) > 2023)||
-                inputs.condition.value == '') {
-            return;
-        }
- 
-        const image = document.querySelector('#complete-img');
-        image.style.visibility = 'hidden';
- 
-        const completeText = document.querySelector('#complete-text');
-        completeText.textContent = '';
- 
-        const model = inputs.model.value;
-        const year = inputs.year.value;
-        const partName = inputs.partName.value;
-        const partNumber = Number(inputs.partNumber.value);
-        const condition = inputs.condition.value;
- 
-        // Clear input fields
-        inputs.model.value = '';
-        inputs.year.value = '';
-        inputs.partName.value = '';
-        inputs.partNumber.value = '';
-        inputs.condition.value = '';
- 
-        const li = document.createElement('li');
-        li.classList.add('part-content');
- 
-        li.innerHTML = `
-            <article>
-                <p>Car Model: ${model}</p>
-                <p>Car Year: ${year}</p>
-                <p>Part Name : ${partName}</p>
-                <p>Part Number: ${partNumber}</p>
-                <p>Condition: ${condition}</p>
-            </article>
-            <button class="edit-btn">Edit</button>
-            <button class="continue-btn">Continue</button>`;
- 
- 
-        const editButton = li.querySelector('.edit-btn');
-        const continueButton = li.querySelector('.continue-btn');
- 
-        editButton.addEventListener('click', () => {
-            inputs.model.value = model;
-            inputs.year.value = year;
-            inputs.partName.value = partName;
-            inputs.partNumber.value = partNumber;
- 
-            nextButton.disabled = false;
- 
-            li.remove();
-        });
- 
-        continueButton.addEventListener('click', (e) => {
-            li.remove();
- 
-            li.innerHTML = `
-            <article>
-                <p>Car Model: ${model}</p>
-                <p>Car Year: ${year}</p>
-                <p>Part Name : ${partName}</p>
-                <p>Part Number: ${partNumber}</p>
-                <p>Condition: ${condition}</p>
-            </article>
-            <button class="confirm-btn">Confirm</button>
-            <button class="cancel-btn">Cancel</button>`;
- 
-            const confirmButton = li.querySelector('.confirm-btn');
-            const cancelButton = li.querySelector('.cancel-btn');
- 
-            confirmButton.addEventListener('click', (e) => {
-                li.remove();
-                nextButton.disabled = false;
- 
-                image.style.visibility = 'visible';
-                completeText.textContent = 'Part is Ordered';
+    const form = document.querySelector('form');
+    const img = document.querySelector('#complete-img');
+    const compText = document.querySelector('#complete-text')
+
+    const partInfo = document.querySelector('.info-list');
+    const confirmOrder = document.querySelector('.confirm-list');
+
+    const fields = Array.from(document.querySelectorAll('form input'));
+    const field5 = document.querySelector('#condition');
+
+    let contBtn;
+    let editBtn;
+
+    nextButton.addEventListener('click', (event) => {
+
+            event.preventDefault();
+
+            if (fields.some(el => el.value.trim() == '') || field5.value.trim() == '' || fields[1].value < 1980 || fields[1].value > 2023) {
+                    return;
+            }
+            img.style.visibility = 'hidden';
+            compText.textContent = '';
+            nextButton.disabled = true;
+
+            let copyFields;
+
+            const [field1, field2, field3, field4] = fields;
+
+            copyFields = {
+                    carModel: field1.value,
+                    carYear: field2.value,
+                    partName: field3.value,
+                    partNumb: field4.value,
+                    condition: field5.value
+            }
+
+            partInfo.innerHTML = `<li class="part-content">
+                    <article>
+                            <p>Car Model: ${copyFields.carModel}</p>
+                            <p>Car Year: ${copyFields.carYear}</p>
+                            <p>Part Name: ${copyFields.partName}</p>
+                            <p>Part Number: ${copyFields.partNumb}</p>
+                            <p>Condition: ${copyFields.condition}</p>
+                    </article>
+                    <button class="edit-btn">Edit</button>
+                    <button class="continue-btn">Continue</button>
+            </li>`
+
+            form.reset()
+
+            contBtn = document.querySelector('.continue-btn');
+            editBtn = document.querySelector('.edit-btn');
+
+            contBtn.addEventListener('click', contFunc.bind(null, copyFields));
+
+            editBtn.addEventListener('click', editFunc.bind(null, copyFields));
+
+    })
+    function contFunc(data) {
+            partInfo.innerHTML = '';
+
+            confirmOrder.innerHTML = `<li class="part-content">
+                   <article>
+                           <p>Car Model: ${data.carModel}</p>
+                           <p>Car Year: ${data.carYear}</p>
+                           <p>Part Name: ${data.partName}</p>
+                           <p>Part Number: ${data.partNumb}</p>
+                           <p>Condition: ${data.condition}</p>
+                   </article>
+                   <button class="confirm-btn">Confirm</button>
+                   <button class="cancel-btn">Cancel</button>
+           </li>`
+
+            const confirmBtn = document.querySelector('.confirm-btn');
+            const cancelBtn = document.querySelector('.cancel-btn');
+
+            confirmBtn.addEventListener('click', (event) => {
+                    confirmOrder.innerHTML = '';
+                    nextButton.disabled = false;
+                    img.style.visibility = 'visible';
+                    compText.textContent = 'Part is Ordered!';
             })
- 
-            cancelButton.addEventListener('click', (e) => {
-                li.remove();
-                nextButton.disabled = false;
- 
+            cancelBtn.addEventListener('click', (event) => {
+                    confirmOrder.innerHTML = '';
+                    nextButton.disabled = false;
             })
- 
-            confirmList.appendChild(li);
-        });
- 
-        infoList.appendChild(li);
- 
-        nextButton.disabled = true;
-    });
- 
-}
+    }
 
+    function editFunc(data) {
+            nextButton.disabled = false
+            partInfo.innerHTML = '';
 
+            const childrens = Array.from(form.querySelectorAll('input, select'));
+            childrens.forEach((ch, i) => ch.value = Object.values(data)[i]);
+    }
 
-
+};
