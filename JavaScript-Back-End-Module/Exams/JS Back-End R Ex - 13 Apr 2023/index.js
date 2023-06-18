@@ -25,9 +25,3 @@ async function start() {
         console.log("listening on http://localhost:3000");
     })
 }
-
-
-// app.use('/static', express.static(path.join(__dirname, 'src', 'static')));
-
-// app.set('views', path.join(__dirname, 'src', 'views'));
-// app.use(express.urlencoded({ extended: true }))
