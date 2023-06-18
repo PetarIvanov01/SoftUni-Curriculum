@@ -6,6 +6,10 @@ const authController = require('../user/authController');
 const searchController = require('../searchController');
 const errorController = require('../errorController');
 const detailsController = require('../detailsController');
+const { updateNav } = require('../middlewares/navigation');
+
+
+router.use(updateNav());
 
 router.use(homeController);
 router.use('/catalog', catalogController);
@@ -14,8 +18,6 @@ router.use('/auth', authController);
 router.use('/search', searchController);
 router.use('/details', detailsController);
 router.use('*', errorController);
-
-
 
 
 module.exports = router
