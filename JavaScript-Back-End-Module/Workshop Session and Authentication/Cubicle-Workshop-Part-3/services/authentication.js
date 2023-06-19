@@ -15,7 +15,7 @@ async function registerUser(username, password) {
 
         const user = new User({
             username,
-            password: await hashedFunc(password)
+            password: await bcrypt.hash(password, 10)
         })
 
         const savedUser = await user.save();
@@ -35,7 +35,7 @@ async function loginUser(username, password) {
     const user = await User.findOne({ username: { $regex: new RegExp('^' + username + '$', 'i') } }).lean();
 
     try {
-        if (user == undefined || await compareHash(password, user.password) == false) {
+        if (user == undefined || await bcrypt.compare(password, user.password) == false) {
             throw new Error('Invalid username or password!');
         }
         const userId = user._id;
@@ -49,12 +49,11 @@ async function loginUser(username, password) {
     }
 }
 
-async function compareHash(password, hash) {
-    return bcrypt.compare(password, hash);
+function verifToken(token) {
+    return jwt.verify(token, secretKey)
 }
 
-async function hashedFunc(password) {
-    return bcrypt.hash(password, 10);
-}
 
-module.exports = { registerUser, compareHash, loginUser}
+
+
+module.exports = { registerUser, loginUser, verifToken }

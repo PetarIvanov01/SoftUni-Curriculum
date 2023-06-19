@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { verifToken } = require('../../services/authentication');
 
 const key = 'secretKey'
 const authentication = (req, res, next) => {
@@ -6,7 +7,7 @@ const authentication = (req, res, next) => {
     if (token) {
         try {
 
-            const decodedToken = jwt.verify(token, key);
+            const decodedToken = verifToken(token);
             req.user = decodedToken;
 
         } catch (error) {
