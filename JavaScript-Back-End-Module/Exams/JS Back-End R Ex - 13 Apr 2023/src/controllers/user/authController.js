@@ -1,7 +1,10 @@
 const router = require('express').Router();
-const { registerUser,loginUser } = require('../../services/authentication');
+const { registerUser, loginUser } = require('../../services/authentication');
+const { parseError } = require('../../util/parser');
+const { hasUser, isGuest } = require('../middlewares/guards');
 
-router.get('/login', (req, res) => {
+
+router.get('/login', isGuest(), (req, res) => {
 
     res.render('login', {
         title: 'Login Page'
@@ -17,34 +20,37 @@ router.post('/login', async (req, res) => {
 
         const token = await loginUser(email, password)
         res.cookie('jwt', token);
-        res.redirect('/');  //TODO redirect by assignment
+        res.redirect('/');
 
     } catch (error) {
-        // const errors = parseError(error);
-        const errors = [error]
+        const errors = parseError(error);
         res.render('login', {
             title: 'Login Page',
             errors,
             body: {
-                username: req.body.username
+                username: req.body.username,
+                email: req.body.email
             }
         })
     }
 
 })
 
-router.get('/register', (req, res) => {
+router.get('/register', isGuest(), (req, res) => {
 
-
-
-    res.render('register');
+    res.render('register', {
+        title: 'Register Page'
+    });
 })
 
 router.post('/register', async (req, res) => {
     const { username, email, password, rePassword } = req.body;
     try {
         if (username.trim() == '' || email.trim() == '' || password.trim() == '' || rePassword.trim() == '') {
-            throw Error('All fields are required!')
+            throw new Error('All fields are required!')
+        }
+        if (password.trim() || rePassword.trim()) {
+            throw new Error('Passwords must be the same!')
         }
         const token = await registerUser(username, email, password);
 
@@ -53,18 +59,19 @@ router.post('/register', async (req, res) => {
         res.redirect('/');
     } catch (error) {
 
-        const errors = [error];
+        const errors = parseError(error);
         res.render('register', {
             title: 'Register page',
             errors,
             body: {
-                username: req.body.username
+                username: req.body.username,
+                email: req.body.email
             }
         })
     }
 })
 
-router.get('/logout', (req, res) => {
+router.get('/logout', hasUser(), (req, res) => {
     res.clearCookie('jwt');
     res.redirect('/');
 })
