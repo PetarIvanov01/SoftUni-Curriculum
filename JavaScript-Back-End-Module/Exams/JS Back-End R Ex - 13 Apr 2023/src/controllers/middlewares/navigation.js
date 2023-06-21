@@ -1,8 +1,16 @@
-exports.updateNav = () => {
-    return (req,res,next) => {
-        const user = req.cookies.jwt
-        user ? res.locals.hasUser = true : res.locals.hasUser = false;
+const { verifyToken } = require("../../services/authentication");
 
-        next();
+module.exports = (app) => (req, res, next) => {
+    const token = req.cookies.jwt;
+    if (token) {
+        try {
+            const userData = verifyToken(token);
+            res.locals.user = userData
+        } catch (error) {
+            res.clearCookie('jwt');
+            res.redirect('/auth/login');
+            return;
+        }
     }
+    next();
 }
