@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const User = require('../database/models/User');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -8,22 +7,22 @@ const secretKey = 'secretKey';
 async function registerUser(username, email, password) {
 
     try {
-        if (await User.findOne({ username: username })) {
+        const exsiting = await User.findOne({ username }).collation(({
+            locale: 'en', strength: 2
+        }));
 
-            throw new Error('User exist!');
+        if (exsiting) {
+            throw new Error('User is taken!');
         }
 
-        const user = new User({
+        const user = await User.create({
             username,
             email,
             password: await hashedFunc(password)
         })
 
-        const savedUser = await user.save();
-        const userId = savedUser._id;
-
-        const token = jwt.sign({ userId }, secretKey);
-        return token
+        const token = createSession(user._id, user.username, user.email);
+        return token;
 
     } catch (error) {
 
@@ -31,18 +30,23 @@ async function registerUser(username, email, password) {
     }
 
 }
-async function loginUser(username, password) {
 
-    const user = await User.findOne({ username: { $regex: new RegExp('^' + username + '$', 'i') } }).lean();
+async function loginUser(email, password) {
 
     try {
-        if (user == undefined || await compareHash(password, user.password) == false) {
-            throw new Error('Invalid username or password!');
+        const user = await User.findOne({ email }).collation(({
+            locale: 'en', strength: 2
+        }));
+        if (!user) {
+            throw new Error('Incorrect username or password');
         }
-        const userId = user._id;
+        const hasMatch = await bcrypt.compare(password, user.password);
+        if (hasMatch == false) {
+            throw new Error('Incorrect username or password');
+        }
 
-        const token = jwt.sign({ userId }, secretKey);
-        return token
+        const token = createSession(user._id, user.username, user.email)
+        return token;
 
     } catch (error) {
 
@@ -50,12 +54,25 @@ async function loginUser(username, password) {
     }
 }
 
-async function compareHash(password, hash) {
-    return bcrypt.compare(password, hash);
+function createSession(_id, username, email) {
+    const payload = {
+        _id,
+        username,
+        email
+    };
+
+    const token = jwt.sign(payload, secretKey);
+    return token;
 }
 
 async function hashedFunc(password) {
+
     return bcrypt.hash(password, 10);
 }
 
-module.exports = { registerUser, compareHash, loginUser }
+function verifyToken(token) {
+
+    return jwt.verify(token, secretKey);
+}
+
+module.exports = { registerUser, loginUser, verifyToken }
