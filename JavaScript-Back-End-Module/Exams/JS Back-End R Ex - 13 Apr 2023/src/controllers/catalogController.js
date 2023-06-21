@@ -1,8 +1,25 @@
 const router = require('express').Router();
+const { getAll } = require('../services/gameService');
+const { parseError } = require('../util/parser');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
-    res.render('catalog');
+    try {
+        const games = await getAll();
+        
+        res.render('catalog', {
+            title: 'Catalog Page',
+            games
+        });
+
+    } catch (error) {
+        const errors = parseError(error);
+        res.render('catalog', {
+            title: 'Catalog Page',
+            errors,
+        })
+    }
+
 })
 
 
