@@ -1,0 +1,19 @@
+const mongoose = require('mongoose');
+
+const CONNECTION_STRING = 'mongodb://127.0.0.1:27017/gamingTeam';
+
+module.exports = async (app) => {
+
+    try {
+        mongoose.connect(CONNECTION_STRING, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+
+        console.log('Database connected');
+        
+    } catch (error) {
+        console.error(error);
+        process.exit(1);
+    }
+}
