@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
         if (username.trim() == '' || email.trim() == '' || password.trim() == '' || rePassword.trim() == '') {
             throw new Error('All fields are required!')
         }
-        if (password.trim() || rePassword.trim()) {
+        if (password.trim() != rePassword.trim()) {
             throw new Error('Passwords must be the same!')
         }
         const token = await registerUser(username, email, password);
