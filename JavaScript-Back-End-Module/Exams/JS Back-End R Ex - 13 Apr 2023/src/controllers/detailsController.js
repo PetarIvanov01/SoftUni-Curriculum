@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { getById, checkIsBought, onBought, editItem } = require('../services/gameService');
+const { getById, checkIsBought, onBought, editItem, deleteItem } = require('../services/gameService');
 const { parseError } = require('../util/parser');
-const { hasUser } = require('./middlewares/guards');
+const { hasUser, isOwner, isNotOwner } = require('./middlewares/guards');
 
 router.get('/:id', async (req, res) => {
     try {
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.get('/:id/buy', async (req, res) => {
+router.get('/:id/buy', isNotOwner(), async (req, res) => {
 
     try {
         const itemId = req.params.id;
@@ -50,8 +50,7 @@ router.get('/:id/buy', async (req, res) => {
 
 })
 
-
-router.get('/edit/:id', hasUser(), async (req, res) => {
+router.get('/edit/:id', isOwner(), async (req, res) => {
 
     const id = req.params.id;
     const item = await getById(id);
@@ -88,6 +87,19 @@ router.post('/edit/:id', async (req, res) => {
                 description: req.body.description
             }
         })
+    }
+
+})
+
+router.get('/delete/:id', isOwner(), async (req, res) => {
+    try {
+
+        const id = req.params.id;
+        await deleteItem(id);
+        res.redirect('/catalog');
+
+    } catch (error) {
+        throw error
     }
 
 })
