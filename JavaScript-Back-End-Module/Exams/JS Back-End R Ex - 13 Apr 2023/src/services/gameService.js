@@ -38,7 +38,7 @@ async function editItem(id, data) {
         item.price = data.price
         item.genre = data.genre
         item.description = data.description
-        item.save();
+        await item.save();
 
     } catch (error) {
         throw error
@@ -46,7 +46,7 @@ async function editItem(id, data) {
 
 }
 async function deleteItem(id) {
-
+    await Game.findByIdAndDelete(id);
 }
 
 async function checkIsBought(userId, itemId) {
@@ -61,8 +61,16 @@ async function onBought(itemId, userId) {
     if (userId) {
         const item = await Game.findById(itemId);
         item.boughtBy.push(userId);
-        item.save();
+        await item.save();
     }
 }
 
-module.exports = { getAll, getById, createItem, editItem, deleteItem, checkIsBought, onBought }
+async function searchGames(name, platform) {
+    try {
+        return await Game.find({ name: { $regex: new RegExp(name, 'i') }, platform: { $regex: new RegExp(platform, 'i') } }).lean();
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = { getAll, getById, createItem, editItem, deleteItem, checkIsBought, onBought, searchGames }
