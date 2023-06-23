@@ -15,10 +15,10 @@
         <div class="edit-container-info">
             <h1>Edit Game Code Offer</h1>
             <form action="" method="POST">
-            {{#with body}}
+                {{#with body}}
                 <label>Platform:</label>
-               <select id="platform" name="platform" value="{{platform}}">
-                    <option value="">-------</option>
+                <select id="platform" name="platform">
+                    <option value="{{platform}}">{{platform}}</option>
                     <option value="PC">PC</option>
                     <option value="Nintendo">Nintendo</option>
                     <option value="PS4">PS4</option>
