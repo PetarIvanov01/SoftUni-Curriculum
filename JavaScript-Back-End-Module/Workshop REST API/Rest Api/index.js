@@ -1,18 +1,15 @@
 const express = require('express');
-const cors = require('./middlewares/cors');
-const authController = require('./controllers/authController');
-const itemController = require('./controllers/itemController');
+const dataConfig = require('./config/database');
+const routerConfig = require('./config/router')
+const expressConfig = require('./config/express')
 
 start();
 async function start() {
 
     const app = express();
-    app.use(express.json());
-    app.use(cors());
-
-    app.use('/users', authController)
-    app.use('/data', itemController)
-
+    expressConfig(app);
+    await dataConfig(app);
+    routerConfig(app)
 
     app.listen(3030, () => console.log('Server is runnning on port 3030'));
 }
