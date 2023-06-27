@@ -8,8 +8,8 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const token = await login(email, password);
-        res.status(201).json(token);
+        const payload = await login(email, password);
+        res.status(201).json(payload);
 
     } catch (error) {
         const message = errParser(error);
@@ -28,8 +28,8 @@ router.post('/register',
             }
             const { email, password } = req.body;
 
-            const token = await register(email, password);
-            res.status(201).json(token);
+            const payload = await register(email, password);
+            res.status(201).json(payload);
 
         } catch (error) {
             const message = errParser(error);
@@ -39,7 +39,7 @@ router.post('/register',
 
 router.get('/logout', async (req, res) => {
     const token = req.token;
-    await logout(token)
+    await logout(token);
     res.status(204).json({ message: 'You are logged out!' })
 })
 

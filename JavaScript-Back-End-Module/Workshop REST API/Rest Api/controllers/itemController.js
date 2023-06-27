@@ -33,7 +33,7 @@ router.post('/catalog',
                 throw errors;
             }
             const userId = req.user._id;
-            await create(req.body, userId)
+            await create(req.body, userId);
 
             res.status(204).end();
         } catch (error) {
