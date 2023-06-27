@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const errParser = require('../util/parser');
 const { create, getAll, getById, getOwnerItems, deleteItem, editItem } = require('../services/furnitureService');
+const { hasUser } = require('../middlewares/guards');
 
 router.get('/catalog', async (req, res) => {
 
@@ -22,7 +23,7 @@ router.get('/catalog', async (req, res) => {
     }
 })
 
-router.post('/catalog',
+router.post('/catalog', hasUser(),
     body('img').
         isURL({ protocols: 'http' }).
         withMessage('URL is invalid'),
@@ -55,7 +56,7 @@ router.get('/catalog/:id', async (req, res) => {
     }
 })
 
-router.delete('/catalog/:id', async (req, res) => {
+router.delete('/catalog/:id', hasUser(), async (req, res) => {
     try {
         const id = req.params.id;
         await deleteItem(id);
@@ -66,7 +67,7 @@ router.delete('/catalog/:id', async (req, res) => {
     }
 })
 
-router.put('/catalog/:id',
+router.put('/catalog/:id', hasUser(),
     body('img').
         isURL({ protocols: 'http' }).
         withMessage('URL is invalid'),
