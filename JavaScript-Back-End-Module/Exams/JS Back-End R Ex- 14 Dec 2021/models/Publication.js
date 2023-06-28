@@ -6,11 +6,11 @@ const pubSchema = new Schema({
     picture: { type: String, required: true },
     certificate: { type: String, required: true },
     _author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     _shared: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     }],
 

@@ -5,7 +5,7 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     address: { type: String, required: true },
     ownPublications: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Publication'
     }],
 })
