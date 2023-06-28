@@ -20,13 +20,8 @@ async function register(username, password, address) {
             address
         });
 
-        const payload = {
-            _id: user._id,
-            username: user.username,
-        }
-        payload.token = createToken(payload);
+        return createToken(user);
 
-        return payload;
     } catch (error) {
         throw error;
     }
@@ -45,19 +40,20 @@ async function login(username, password) {
             throw new Error('Incorrect username or password');
         }
 
-        const payload = {
-            _id: user._id,
-            username: user.username,
-        }
-        payload.token = createToken(payload);
+        return createToken(user);
 
-        return payload;
     } catch (error) {
         throw error;
     }
 }
-function createToken(payload) {
-    return jwt.sign(payload, SECRET_KEY)
+function createToken(user) {
+    
+    const payload = {
+        _id: user._id,
+        username: user.username,
+    }
+    const token = jwt.sign(payload, SECRET_KEY);
+    return token;
 }
 
 function verifyToken(token) {
