@@ -1,5 +1,5 @@
 const { isGuest, hasUser } = require('../middlewares/guards');
-const { register, login } = require('../services/userServices');
+const { register, login } = require('../services/userService');
 const { parseError } = require('../util.js/parser');
 
 const authController = require('express').Router();
