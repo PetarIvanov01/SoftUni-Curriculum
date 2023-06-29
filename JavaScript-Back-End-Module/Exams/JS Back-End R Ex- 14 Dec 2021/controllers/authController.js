@@ -19,7 +19,7 @@ authController.get('/register', isGuest, (req, res) => {
     })
 })
 
-authController.post('/register', async (req, res) => {
+authController.post('/register', isGuest, async (req, res) => {
     try {
         const { username, password, re_Password, address } = req.body;
         if (Object.values(req.body).some(v => v == '')) {
@@ -43,7 +43,7 @@ authController.post('/register', async (req, res) => {
 
 })
 
-authController.post('/login', async (req, res) => {
+authController.post('/login', isGuest, async (req, res) => {
     try {
         const { username, password } = req.body;
         if (Object.values(req.body).some(v => v == '')) {
