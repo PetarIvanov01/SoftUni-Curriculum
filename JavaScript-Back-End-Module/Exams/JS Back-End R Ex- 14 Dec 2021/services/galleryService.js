@@ -65,8 +65,20 @@ async function editById(_id, body) {
 
 async function getUserProfile(_id) {
     try {
-        const user = await User.findById(_id).lean();
+        const user = await User.findById(_id).populate('ownPublications').populate('sharedPosts').lean();
 
+        const ownPosts = user.ownPublications.map(v => v.title).join(', ');
+        const sharedPosts = user.sharedPosts.map(v => v.title).join(', ');
+
+        const response = {
+            address: user.address,
+            username: user.username,
+            sharedPosts,
+            ownPosts
+
+        }
+
+        return response
     } catch (error) {
         throw error
     }
@@ -74,11 +86,15 @@ async function getUserProfile(_id) {
 
 async function sendShare(userId, itemId) {
     try {
+        const user = await User.findById(userId);
 
         const item = await Publication.findById({ _id: itemId })
         if (item._shared.includes(userId)) {
             throw new Error('You already shared it!')
         }
+        user.sharedPosts.push(itemId);
+        user.save();
+
         item._shared.push(userId);
         item.save();
 
