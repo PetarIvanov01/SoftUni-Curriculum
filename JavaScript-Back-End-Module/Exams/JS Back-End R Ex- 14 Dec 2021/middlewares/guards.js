@@ -5,7 +5,7 @@ function hasUser(req, res, next) {
         next();
     }
     else {
-        res.render('404', {
+        res.status(401).render('404', {
             title: 'Error Page'
         });
     }
@@ -18,7 +18,7 @@ function isGuest(req, res, next) {
         next();
     }
     else {
-        res.render('404', {
+        res.status(401).render('404', {
             title: 'Error Page'
         });
     }
