@@ -1,22 +1,24 @@
 const router = require('express').Router();
-const { hasUser } = require('../middlewares/guards');
-const { create, editById, getDetails, sendShare, getById, deleteItem } = require('../services/galleryService');
+const { create, editById, sendShare, getById, deleteItem } = require('../services/galleryService');
 const { parseError } = require('../util/parser')
 
 //Create controllers 
-router.get('/create', hasUser, (req, res) => {
+router.get('/create', (req, res) => {
 
     try {
         res.render('create', {
             title: 'Create Page'
         })
     } catch (error) {
-        console.error(error);
-        throw error
+        const msg = parseError(error);
+        res.render('home', {
+            title: 'Home Page',
+            errors: msg,
+        })
     }
 
 })
-router.post('/create', hasUser, async (req, res) => {
+router.post('/create', async (req, res) => {
     try {
         const { title, technique, picture, certificate } = req.body;
         if (Object.values(req.body).some(v => v == '')) {
@@ -43,7 +45,7 @@ router.post('/create', hasUser, async (req, res) => {
 })
 
 //Edit controllers 
-router.get('/edit/:id', hasUser, async (req, res) => {
+router.get('/edit/:id', async (req, res) => {
     try {
         const itemId = req.params.id;
         const body = await getById(itemId);
@@ -54,11 +56,14 @@ router.get('/edit/:id', hasUser, async (req, res) => {
         })
 
     } catch (error) {
-        console.error(error);
-        throw error
+        const msg = parseError(error);
+        res.render('home', {
+            title: 'Home Page',
+            errors: msg,
+        })
     }
 })
-router.post('/edit/:id', hasUser, async (req, res) => {
+router.post('/edit/:id', async (req, res) => {
     try {
         const itemId = req.params.id;
         const { title, technique, picture, certificate } = req.body;
@@ -69,7 +74,7 @@ router.post('/edit/:id', hasUser, async (req, res) => {
 
         await editById(itemId, { title, technique, picture, certificate })
 
-        res.redirect('/gallery/details/' + itemId);
+        res.redirect('/details/' + itemId);
 
     } catch (error) {
         const msg = parseError(error);
@@ -87,31 +92,8 @@ router.post('/edit/:id', hasUser, async (req, res) => {
     }
 })
 
-//Details controller
-router.get('/details/:id', hasUser, async (req, res) => {
-
-    try {
-        const itemId = req.params.id;
-        const isUser = req.user;
-        const item = await getDetails(itemId);
-        const isOwner = item._author._id == req.user._id;
-        const isShared = item._shared.map(v => v.toString()).includes(req.user._id);
-
-        res.render('details', {
-            title: 'Details Page',
-            item,
-            isOwner,
-            isUser,
-            isShared
-        })
-    } catch (error) {
-        console.error(error);
-        throw error
-    }
-})
-
 //Delete controller
-router.get('/delete/:id', hasUser, async (req, res) => {
+router.get('/delete/:id', async (req, res) => {
     try {
         const userId = req.user._id;
         const itemId = req.params.id;
@@ -120,23 +102,30 @@ router.get('/delete/:id', hasUser, async (req, res) => {
 
         res.redirect('/catalog')
     } catch (error) {
-        throw error
+        const msg = parseError(error);
+        res.render('home', {
+            title: 'Home Page',
+            errors: msg,
+        })
     }
 })
 
 //Share controller
-router.get('/share/:id', hasUser, async (req, res) => {
+router.get('/share/:id', async (req, res) => {
     try {
         const itemId = req.params.id;
         const userId = req.user._id;
 
         await sendShare(userId, itemId);
 
-        res.redirect('/gallery/details/' + itemId);
+        res.redirect('/details/' + itemId);
 
     } catch (error) {
-        console.error(error);
-        throw error
+        const msg = parseError(error);
+        res.render('home', {
+            title: 'Home Page',
+            errors: msg,
+        })
     }
 })
 
