@@ -6,7 +6,8 @@ const body = document.querySelector('main');
 
 export const renderMiddlware = (ctx, next) => {
 
-    ctx.render = (content) => render(content, body)
+    ctx.render = (content) => render(content, body);
+    ctx.user = getUserData();
     ctx.update = updateNav;
 
     updateNav();
