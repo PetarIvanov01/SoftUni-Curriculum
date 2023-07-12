@@ -27,9 +27,21 @@ export async function getById(id) {
 }
 
 export async function editById(id, data) {
-    return await api.get(endpoints.edit(id), data);
+    return await api.put(endpoints.edit(id), data);
 }
 
 export async function deleteOffer(id) {
-    return await api.delete(endpoints.delete(id));
+    return await api.del(endpoints.delete(id));
+}
+
+export async function getOwn(offerId, userId) {
+    return await api.get(endpoints.own(offerId, userId))
+}
+
+export async function getTotal(offerId) {
+    return await api.get(endpoints.total(offerId))
+}
+
+export async function doApplly(offerId) {
+    return await api.post(endpoints.applications, offerId)
 }
