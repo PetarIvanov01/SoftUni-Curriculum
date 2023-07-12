@@ -6,7 +6,6 @@ async function request(url, options) {
     try {
 
         const response = await fetch(host + url, options);
-
         if (response.ok == false) {
             if (response.status == 403) {
                 clearUserData();
