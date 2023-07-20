@@ -1,4 +1,4 @@
-import { createTeamReq } from "../../service/api-cals.js";
+import { approveByOwner, becomeMembReq, createTeamReq, getTeamDetails } from "../../service/api-cals.js";
 import { html } from "../../util.js"
 
 export function createController(ctx) {
@@ -20,6 +20,10 @@ export function createController(ctx) {
             }
             const item = await createTeamReq({ name, logoUrl, description });
             //TODO validation
+            const ownerownerMemb = await becomeMembReq(item._id);
+            ownerownerMemb.status = 'member';
+            await approveByOwner(ownerownerMemb._id, ownerownerMemb);
+
             ctx.page.redirect(`/details/${item._id}`);
 
         } catch (error) {

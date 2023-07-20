@@ -141,8 +141,7 @@ async function onApprove(member, event) {
     try {
         event.preventDefault();
         member.status = 'member';
-
-        await approveByOwner(member._id,member);
+        await approveByOwner(member._id, member);
         context.page.redirect(`/details/${context.params.id}`)
 
     } catch (error) {
