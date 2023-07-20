@@ -11,7 +11,6 @@ const endpoints = {
     allMembersInCurrentTeam: (teamsId) => {
         const querryString = teamsId.map(i => i = `"${i}"`).join(',');
         const encodedString = encodeURIComponent(`where=teamId%20IN%20(${encodeURIComponent(querryString)})%20AND%20status=member`);
-        console.log(querryString);
         return `/data/members?${encodedString}`
     },
 
@@ -62,11 +61,11 @@ export async function getTeamDetails(teamId) {
 }
 
 export async function getAllTeamMembers(teamId) {
-    return await api.get(endpoints.getAllMemberships(teamId))
+    return await api.get(endpoints.getAllMemberships(teamId));
 }
 
 export async function becomeMembReq(teamId) {
-    return await api.post(endpoints.becomeMembReq, { teamId })
+    return await api.post(endpoints.becomeMembReq, { teamId });
 }
 
 export async function cancelMembReq(id) {
@@ -78,5 +77,9 @@ export async function approveByOwner(id, member) {
 }
 
 export async function createTeamReq(data) {
-    return await api.post(endpoints.createTeam, data)
+    return await api.post(endpoints.createTeam, data);
+}
+
+export async function editTeamReq(teamId, data) {
+    return await api.put(endpoints.editTeam(teamId), data);
 }

@@ -10,6 +10,7 @@ import { attachRender } from "./middlewares/middleware.js";
 import { logoutController } from "./controllers/authViews/logout.js";
 import { showNavigation } from "./middlewares/navigation.js";
 import { teamMembers } from "./middlewares/team.js";
+import { editController } from "./controllers/page/edit.js";
 
 
 page(attachRender);
@@ -20,9 +21,11 @@ page('/', homeController);
 
 page('/catalog', catalogController);
 
-page('/details/:id',detailsController);
+page('/details/:id', detailsController);
 
-page('/own/teams',myTeamController);
+page('/edit/:id', editController);
+
+page('/own/teams', myTeamController);
 
 page('/create', createController);
 
