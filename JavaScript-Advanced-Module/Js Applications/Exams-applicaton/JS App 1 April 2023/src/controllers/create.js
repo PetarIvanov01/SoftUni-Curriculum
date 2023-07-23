@@ -19,6 +19,7 @@ export function createControler(ctx) {
             if (Object.values(data).some(el => el == '')) {
                 throw new Error('All fields are required!')
             }
+            
             await createFruit(data);
             ctx.page.redirect('/');
 
