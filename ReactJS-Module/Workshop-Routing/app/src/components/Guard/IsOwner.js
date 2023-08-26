@@ -16,7 +16,7 @@ export default function IsOwner({ user }) {
                 }
             })
             .catch(error => setIfOwner(false))
-    }, [user])
+    }, [user, id])
 
     return isOwner ? <Outlet /> : <NotAuthorized />
 }
